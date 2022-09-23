@@ -20,8 +20,8 @@ public class Member implements Comparable<Member>{
         this.location = location;
     }
 
-    public Member(String fname, Location location, String lname,
-                  Date dob, Date expire) {
+    public Member(String fname, String lname,
+                  Date dob, Date expire, Location location) {
         this.location = location;
         this.fname = fname;
         this.lname = lname;
@@ -54,15 +54,26 @@ public class Member implements Comparable<Member>{
 
     @Override
     public String toString() {
-        String s="";
-        s.concat((this.fname + "" + this.lname + ", "));
-        s.concat(("DOB: "+ this.dob + ","));
-        s.concat("Membership expires "+ this.expire + ",");
-        s.concat("Location: " + this.location);
+        String s=this.fname + " " + this.lname + ", " + "DOB: "+ this.dob.toString() + "," + " Membership expires "
+                + this.expire.toString() + "," + " Location: " + this.location;
+
+
+        /*String name= (this.fname + "" + this.lname + ", ");
+        String dob= ("DOB: "+ this.dob + ",");
+        String expire= ("Membership expires "+ this.expire + ",");
+        String location= ("Location: " + this.location);
+        s.concat(name);
+        s.concat(dob);
+        s.concat(expire);
+        s.concat(location);*/
 
         return s;
     }
     //April March, DOB: 3/31/1990, Membership expires 6/30/2023, Location: PISCATAWAY, 08854, MIDDLESEX
+    public static void main(String[] args) {
+        Member nik=new Member("Niklas", "Bloom", new Date("6/2/2000"),new Date("6/30/2023"),Location.Piscataway);
+        System.out.print(nik.toString());
 
+    }
 }
 
