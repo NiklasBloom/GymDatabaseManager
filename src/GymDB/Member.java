@@ -37,14 +37,32 @@ public class Member implements Comparable<Member>{
     }
 
     @Override
-    public boolean equals(Object Obj ) {
-        return true;
+    public boolean equals(Object obj) {
+        if (obj instanceof Member) {
+            Member student = (Member) obj; //casting
+            if (student.fname.equals(this.fname)&& student.lname.equals(this.lname) &&
+                    student.dob.equals(this.dob)){
+                return true;
+            }
+            else {
+                return false;
+            }
+
+        }
+        return false;
     }
 
     @Override
     public String toString() {
-        return "yeah";
+        String s="";
+        s.concat((this.fname + "" + this.lname + ", "));
+        s.concat(("DOB: "+ this.dob + ","));
+        s.concat("Membership expires "+ this.expire + ",");
+        s.concat("Location: " + this.location);
+
+        return s;
     }
+    //April March, DOB: 3/31/1990, Membership expires 6/30/2023, Location: PISCATAWAY, 08854, MIDDLESEX
 
 }
 
