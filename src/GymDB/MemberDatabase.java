@@ -38,7 +38,7 @@ public class MemberDatabase {
         }
         mlist[firstNull] = member; // I think this method should work?
 
-        return false;
+        return true;
     }
 
     /*
@@ -65,9 +65,36 @@ public class MemberDatabase {
     public boolean remove(Member member) {
         return false;
     }
-    public void print () { } //print the array contents as is
+    public void print () {
+        for(int i = 0; i < this.size; i++){
+            this.mlist[i].toString(); // I think this should work?
+            System.out.println();
+        }
+
+    } //print the array contents as is
+
+    /*
+    PC command, to display the list of members in the database ordered by the county names and then the zip codes;
+    that is, if the locations are in the same county, ordered by the zip codes.
+    Ordered by
+    1) Edison
+    2) Piscataway
+    3) Bridgewater
+    4) Franklin
+    5) Somerville
+     */
     public void printByCounty() { } //sort by county and then zipcode
+
+    /*
+    PD command, display the list of members in the database ordered by the expiration dates. If two expiration dates
+    are the same, their order doesn’t matter.
+     */
     public void printByExpirationDate() { } //sort by the expiration date
+
+    /*
+    PN command, display the list of membersin the database ordered by the members’ last names and then first names;
+    that is, if two members have the same last name, ordered by the first name.
+     */
     public void printByName() { } //sort by last name and then first name
 
 }
