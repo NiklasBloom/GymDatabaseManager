@@ -13,6 +13,12 @@ public class MemberDatabase {
     /* The find() method searches a member in the list and returns the index if it is found, it returns -1 if the
     member is not in the list. You must define a constant identifier “NOT_FOUND” for the value -1. */
     private int find(Member member) {
+        for (int i = 0; i < size; i++){
+            if(this.mlist[i].equals(member)){
+                return 1;
+            }
+
+        }
         return -1;
     }
 
@@ -62,7 +68,12 @@ public class MemberDatabase {
             return true; //the array has room for more elements
         }
     }
-    public boolean remove(Member member) {
+
+    /*
+    The remove() method remove a member from the list. This method maintains the relative order of the
+    members in the list after the remove, -3 points if this is not done correctly.
+     */
+    public boolean remove(Member member) {//basically given index
         return false;
     }
     public void print () {
@@ -124,24 +135,17 @@ public class MemberDatabase {
     public void printByName() {
         for (int i = 0; i < size - 1; i++){
             for (int j = 0; j < size - i - 1; j++){
-                if(this.mlist[j].getLname().compareTo(this.mlist[j+1].getLname())>0){
-                    //if j index last name > then switch
-                    /*
-                    if s1 > s2, it returns positive number
-                    if s1 < s2, it returns negative number
-                    if s1 == s2, it returns 0
-                     */
+                if(this.mlist[j].compareTo(this.mlist[j+1])>0){
                     Member temp = this.mlist[j];
                     this.mlist[j] = this.mlist[j+1];
                     this.mlist[j+1] = temp;
                 }
-                else if(this.mlist[j].getLname().compareTo(this.mlist[j+1].getLname())==0){
-                    if(this.mlist[j].getFname().compareTo(this.mlist[j+1].getFname())>0){
+                else if(this.mlist[j].compareTo(this.mlist[j+1])==0){
+                    if(this.mlist[j].compareTo(this.mlist[j+1])>0){
                         //if last names are the same, then compare first names
                         Member temp = this.mlist[j];
                         this.mlist[j] = this.mlist[j+1];
                         this.mlist[j+1] = temp;
-
                     }
                 }
 

@@ -48,8 +48,35 @@ public class Member implements Comparable<Member>{
 
 
 
+    /*
+     compareTo() method is used when sorting by names
+     if s1 > s2, it returns 1
+     if s1 < s2, it returns -1
+     if s1 == s2, it returns 0
+    */
     @Override
     public int compareTo(Member member) {
+        if(this.getLname().compareTo(member.getLname()) > 0){ //this last name is greater
+            return 1;
+            }
+        if(this.getLname().compareTo(member.getLname()) < 0){ //this last name is lesser
+            return -1;
+        }
+        if(this.getLname().compareTo(member.getLname()) == 0){ //this last name is equal
+            if(this.getFname().compareTo(member.getFname()) > 0){//this first name greater
+                return 1;
+            }
+        }
+        if(this.getLname().compareTo(member.getLname()) == 0){ //this last name is equal
+            if(this.getFname().compareTo(member.getFname()) < 0){//this first name lesser
+                return -1;
+            }
+        }
+        if(this.getLname().compareTo(member.getLname()) == 0){ //this last name is equal
+            if(this.getFname().compareTo(member.getFname()) == 0){//this first name equal
+                return 0;
+            }
+        }
         return 0;
     }
 
