@@ -33,19 +33,17 @@ public class Member implements Comparable<Member>{
         return this.lname;
     }
 
-    public Date getDob(){
-        return this.dob;
+    public String getDob(){
+        return this.dob.toString();
     }
 
-    public Date getExpire(){
-        return this.expire;
+    public String getExpire(){
+        return this.expire.toString();
     }
 
     public String getLocation(){
         return this.location.toString();
     }
-
-
 
 
     /*
@@ -82,6 +80,12 @@ public class Member implements Comparable<Member>{
 
     @Override
     public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (this.getClass() != obj.getClass()) {
+            return false;
+        }
         if (obj instanceof Member) {
             Member student = (Member) obj; //casting
             if (student.fname.equals(this.fname)&& student.lname.equals(this.lname) &&
@@ -91,7 +95,6 @@ public class Member implements Comparable<Member>{
             else {
                 return false;
             }
-
         }
         return false;
     }
@@ -100,8 +103,6 @@ public class Member implements Comparable<Member>{
     public String toString() {
         String s=this.fname + " " + this.lname + ", " + "DOB: "+ this.dob.toString() + "," + " Membership expires "
                 + this.expire.toString() + "," + " Location: " + this.fullLocation();
-
-
         return s;
     }
     //April March, DOB: 3/31/1990, Membership expires 6/30/2023, Location: PISCATAWAY, 08854, MIDDLESEX
@@ -160,8 +161,6 @@ public class Member implements Comparable<Member>{
         Member nik=new Member("Niklas", "Bloom", new Date("6/2/2000"),new Date("6/30/2023"),Location.Piscataway);
         System.out.println(nik.toString());
         System.out.println(nik.getLocation());
-
-
 
     }
 }

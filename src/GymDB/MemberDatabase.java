@@ -76,14 +76,15 @@ public class MemberDatabase {
     public boolean remove(Member member) {//basically given index
         return false;
     }
+    /*
+    print the array contents as is
+     */
     public void print () {
         for(int i = 0; i < this.size; i++){
-            this.mlist[i].toString(); // I think this should work?
-            System.out.println();
+            System.out.println(this.mlist[i].toString());
         }
 
-    } //print the array contents as is
-
+    }
 
     /*
     PC command, to display the list of members in the database ordered by the county names and then the zip codes;
@@ -107,13 +108,25 @@ public class MemberDatabase {
                 }
             }
         }
-    } //sort by county and then zipcode
+        this.print();
+    }
 
     /*
     PD command, display the list of members in the database ordered by the expiration dates. If two expiration dates
     are the same, their order doesn’t matter.
      */
-    public void printByExpirationDate() { } //sort by the expiration date
+    public void printByExpirationDate() {// not done
+        for (int i = 0; i < size - 1; i++){
+            for (int j = 0; j < size - i - 1; j++){
+                /*if(this.mlist[j].locationNumeric() > this.mlist[j+1].locationNumeric()){
+                    Member temp = this.mlist[j];
+                    this.mlist[j] = this.mlist[j+1];
+                    this.mlist[j+1] = temp;
+                }*/
+            }
+        }
+        this.print();
+    } //sort by the expiration date bubblesort
 
     /*
     PN command, display the list of membersin the database ordered by the members’ last names and then first names;
@@ -138,6 +151,7 @@ public class MemberDatabase {
 
             }
         }
+        this.print();
     } //sort by last name and then first name
 
 }
