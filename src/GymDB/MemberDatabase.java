@@ -73,17 +73,43 @@ public class MemberDatabase {
 
     } //print the array contents as is
 
+
+
+    public void bubbleSort(int arr[])
+    {
+        int n = arr.length;
+        for (int i = 0; i < n - 1; i++)
+            for (int j = 0; j < n - i - 1; j++)
+                if (arr[j] > arr[j + 1]) {
+                    // swap arr[j+1] and arr[j]
+                    int temp = arr[j];
+                    arr[j] = arr[j + 1];
+                    arr[j + 1] = temp;
+                }
+    }
     /*
     PC command, to display the list of members in the database ordered by the county names and then the zip codes;
     that is, if the locations are in the same county, ordered by the zip codes.
     Ordered by
-    1) Edison
-    2) Piscataway
-    3) Bridgewater
-    4) Franklin
-    5) Somerville
+
+    1) Edison, 08837, Middlesex County
+    2) Piscataway, 08854, Middlesex County
+    3) Bridgewater, 08807, Somerset County
+    4) Franklin, 08873, Somerset County
+    5) Somerville, 08876, Somerset County
      */
-    public void printByCounty() { } //sort by county and then zipcode
+
+    public void printByCounty() {// I was thinking maybe just doing bubblesort? since in place and ez
+        for (int i = 0; i < size - 1; i++){
+            for (int j = 0; j < size - i - 1; j++){
+                if(this.mlist[j].locationNumeric() > this.mlist[j+1].locationNumeric()){
+                    Member temp = this.mlist[j];
+                    this.mlist[j] = this.mlist[j+1];
+                    this.mlist[j+1] = temp;
+                }
+            }
+        }
+    } //sort by county and then zipcode
 
     /*
     PD command, display the list of members in the database ordered by the expiration dates. If two expiration dates
@@ -95,6 +121,32 @@ public class MemberDatabase {
     PN command, display the list of membersin the database ordered by the members’ last names and then first names;
     that is, if two members have the same last name, ordered by the first name.
      */
-    public void printByName() { } //sort by last name and then first name
+    public void printByName() {
+        for (int i = 0; i < size - 1; i++){
+            for (int j = 0; j < size - i - 1; j++){
+                if(this.mlist[j].getLname().compareTo(this.mlist[j+1].getLname())>0){
+                    //if j index last name > then switch
+                    /*
+                    if s1 > s2, it returns positive number
+                    if s1 < s2, it returns negative number
+                    if s1 == s2, it returns 0
+                     */
+                    Member temp = this.mlist[j];
+                    this.mlist[j] = this.mlist[j+1];
+                    this.mlist[j+1] = temp;
+                }
+                else if(this.mlist[j].getLname().compareTo(this.mlist[j+1].getLname())==0){
+                    if(this.mlist[j].getFname().compareTo(this.mlist[j+1].getFname())>0){
+                        //if last names are the same, then compare first names
+                        Member temp = this.mlist[j];
+                        this.mlist[j] = this.mlist[j+1];
+                        this.mlist[j+1] = temp;
+
+                    }
+                }
+
+            }
+        }
+    } //sort by last name and then first name
 
 }
