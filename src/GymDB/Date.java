@@ -30,8 +30,46 @@ public class Date implements Comparable<Date> {
     public void leapYearCheck(String date){
 
     }
+
+    /*
+    compareTo() method is used when sorting by names
+    if s1 > s2, it returns 1
+    if s1 < s2, it returns -1
+    if s1 == s2, it returns 0
+   */
     @Override
     public int compareTo(Date date) {
+        String[] tokens=date.toString().split("/");
+        String month = tokens[0];
+        String day = tokens[1];
+        String year = tokens[2];
+        int intMonth= Integer.parseInt(month);
+        int intDay = Integer.parseInt(day);
+        int intYear= Integer.parseInt(year);
+        if(this.year > intYear){
+            return 1;}
+        if(this.year < intYear){
+            return -1;}
+        if(this.year == intYear){
+            if(this.month > intMonth){
+                return 1;}
+        }
+        if(this.year == intYear){
+            if(this.month < intMonth){
+                return -1;}
+        }
+        if(this.year == intYear){
+            if(this.month == intMonth){
+                if(this.day > intDay){
+                    return 1;}
+            }
+        }
+        if(this.year == intYear){
+            if(this.month == intMonth){
+                if(this.day < intDay){
+                    return -1;}
+            }
+        }
         return -1;
     }
 

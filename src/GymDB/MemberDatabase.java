@@ -115,18 +115,20 @@ public class MemberDatabase {
     PD command, display the list of members in the database ordered by the expiration dates. If two expiration dates
     are the same, their order doesn’t matter.
      */
-    public void printByExpirationDate() {// not done
+    public void printByExpirationDate() {
         for (int i = 0; i < size - 1; i++){
             for (int j = 0; j < size - i - 1; j++){
-                /*if(this.mlist[j].locationNumeric() > this.mlist[j+1].locationNumeric()){
+                if(this.mlist[j].getExpire().compareTo(this.mlist[j+1].getExpire()) > 0){
+                    //if j > j+1
                     Member temp = this.mlist[j];
                     this.mlist[j] = this.mlist[j+1];
                     this.mlist[j+1] = temp;
-                }*/
+
+                }
             }
         }
         this.print();
-    } //sort by the expiration date bubblesort
+    }
 
     /*
     PN command, display the list of membersin the database ordered by the members’ last names and then first names;
