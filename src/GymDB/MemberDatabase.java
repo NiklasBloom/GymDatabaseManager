@@ -30,19 +30,29 @@ public class MemberDatabase {
         System.arraycopy(this.mlist, 0, arr, 0, this.mlist.length);
     }
 
-    public boolean add(Member member){// dont know why this method returns boolean and isnt void
-        if(this.checkCapacity()==false){
+    /*
+    adds a member to the array
+    Returns false if the member already exists in the array
+    Checks if capacity of array is full and then inc size by 4 if full
+
+     */
+    public boolean add(Member member){
+        if(this.find(member)==1){
+            return false;
+        }
+        if(this.checkCapacity()==false){ //check capacity if have to increase size by 4
             this.grow();
         }
         //get index of first null element in array
         int firstNull = -1;
-        for (int i = 0; i < this.mlist.length; i++) {
+        for (int i = 0; i < this.mlist.length; i++) { //should size be size of array or # of members?
             if (this.mlist[i] == null) {
                 firstNull = i;
                 break;
             }
         }
-        mlist[firstNull] = member; // I think this method should work?
+        mlist[firstNull] = member;
+        //firstnull should never be -1, since we grew array if empty, a first null should always exist
 
         return true;
     }
@@ -52,15 +62,12 @@ public class MemberDatabase {
     If there is no room, the add element will grow() the array.
      */
     public boolean checkCapacity(){
-
         boolean arrCapacity = false;
-
         for(int i = 0; i < this.size; i++){
             if(this.mlist[i] == null){
                 arrCapacity = true;//is any element null? if so then not full
             }
         }
-
         if(arrCapacity == false){
             return false; //the array is full
         }
@@ -73,17 +80,17 @@ public class MemberDatabase {
     The remove() method remove a member from the list. This method maintains the relative order of the
     members in the list after the remove, -3 points if this is not done correctly.
      */
-    public boolean remove(Member member) {//basically given index
+    public boolean remove(Member member) { //basically given index
         return false;
     }
+
     /*
     print the array contents as is
      */
     public void print () {
         for(int i = 0; i < this.size; i++){
-            System.out.println(this.mlist[i].toString());
+            System.out.println(this.mlist[i].toString()); //should use member toString method
         }
-
     }
 
     /*
@@ -96,9 +103,10 @@ public class MemberDatabase {
     3) Bridgewater, 08807, Somerset County
     4) Franklin, 08873, Somerset County
     5) Somerville, 08876, Somerset County
-     */
 
-    public void printByCounty() {// I was thinking maybe just doing bubblesort? since in place and ez
+    these sorts use bubblesort
+     */
+    public void printByCounty() {
         for (int i = 0; i < size - 1; i++){
             for (int j = 0; j < size - i - 1; j++){
                 if(this.mlist[j].locationNumeric() > this.mlist[j+1].locationNumeric()){
@@ -119,6 +127,8 @@ public class MemberDatabase {
         for (int i = 0; i < size - 1; i++){
             for (int j = 0; j < size - i - 1; j++){
                 if(this.mlist[j].getExpire().compareTo(this.mlist[j+1].getExpire()) > 0){
+                    //getExpire returns a string, am comparing strings oops not work
+                    //ok fixed, now getexpire returns Date object, CompareTo should not compare the Dates
                     //if j > j+1
                     Member temp = this.mlist[j];
                     this.mlist[j] = this.mlist[j+1];
@@ -137,7 +147,7 @@ public class MemberDatabase {
     public void printByName() {
         for (int i = 0; i < size - 1; i++){
             for (int j = 0; j < size - i - 1; j++){
-                if(this.mlist[j].compareTo(this.mlist[j+1])>0){
+                if(this.mlist[j].compareTo(this.mlist[j+1])>0){ //this should use member compareTo method
                     Member temp = this.mlist[j];
                     this.mlist[j] = this.mlist[j+1];
                     this.mlist[j+1] = temp;
@@ -150,10 +160,8 @@ public class MemberDatabase {
                         this.mlist[j+1] = temp;
                     }
                 }
-
             }
         }
         this.print();
-    } //sort by last name and then first name
-
+    }
 }

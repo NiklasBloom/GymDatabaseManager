@@ -33,12 +33,12 @@ public class Member implements Comparable<Member>{
         return this.lname;
     }
 
-    public String getDob(){
-        return this.dob.toString();
+    public Date getDob(){
+        return this.dob;
     }
 
-    public String getExpire(){
-        return this.expire.toString();
+    public Date getExpire(){
+        return this.expire;
     }
 
     public String getLocation(){
