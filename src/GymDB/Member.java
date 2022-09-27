@@ -157,7 +157,7 @@ public class Member implements Comparable<Member>{
         }
         return locationNumber;
     }
-    public static void main(String[] args) {
+    public static void main(String[] args) { //to test code in this class, GymManager class not done yet
         Member nik=new Member("Niklas", "Bloom", new Date("6/2/2000"),new Date("6/30/2023"),Location.Piscataway);
         System.out.println(nik.toString());
         System.out.println(nik.getLocation());

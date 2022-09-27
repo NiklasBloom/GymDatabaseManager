@@ -4,22 +4,23 @@ public class MemberDatabase {
     private Member [] mlist;
     private int size;
 
+
+    public static final int NOT_FOUND = -1;
+
     public MemberDatabase() {
         this.size=4;
         this.mlist=new Member[4];
     }
-
 
     /* The find() method searches a member in the list and returns the index if it is found, it returns -1 if the
     member is not in the list. You must define a constant identifier “NOT_FOUND” for the value -1. */
     private int find(Member member) {
         for (int i = 0; i < size; i++){
             if(this.mlist[i].equals(member)){
-                return 1;
+                return i;
             }
-
         }
-        return -1;
+        return NOT_FOUND;
     }
 
     /*
@@ -28,6 +29,8 @@ public class MemberDatabase {
     private void grow(){
         Member[] arr = new Member[this.size+4];
         System.arraycopy(this.mlist, 0, arr, 0, this.mlist.length);
+        this.size = this.size + 4;
+        this.mlist = arr;
     }
 
     /*
@@ -79,10 +82,29 @@ public class MemberDatabase {
     /*
     The remove() method remove a member from the list. This method maintains the relative order of the
     members in the list after the remove, -3 points if this is not done correctly.
+    The container does not decrease in capacity.
      */
-    public boolean remove(Member member) { //basically given index
-        return false;
+    public boolean remove(Member member) {
+        int memberIndex = find(member);
+        if(memberIndex == NOT_FOUND){
+            return false; //member does not exist in array
+        }
+        Member[] arr = new Member[this.size];
+        for(int i =0; i < this.size; i++){
+            if(i == memberIndex){
+                continue; //skip this index, dont copy this member over
+            }
+            arr[i] = this.mlist[i];
+        }
+
+
+        return true;
     }
+
+    /*
+    returns
+     */
+
 
     /*
     print the array contents as is
@@ -163,5 +185,13 @@ public class MemberDatabase {
             }
         }
         this.print();
+    }
+
+
+    public static void main(String[] args) { //to test code in this class, GymManager class not done yet
+        Member nik=new Member("Niklas", "Bloom", new Date("6/2/2000"),new Date("6/30/2023"), Member.Location.Piscataway);
+        System.out.println(nik.toString());
+        System.out.println(nik.getLocation());
+
     }
 }
