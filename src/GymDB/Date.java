@@ -1,4 +1,5 @@
 package GymDB;
+import java.util.Calendar;
 
 public class Date implements Comparable<Date> {
     private int year;
@@ -11,10 +12,15 @@ public class Date implements Comparable<Date> {
     public static final int QUATERCENTENNIAL = 400;
 
 
-    public Date() { //idk what to do wit this
-
-
-    } //create an object with today’s date (see Calendar class)
+    /*
+    create an object with today’s date using the calendar class
+     */
+    public Date() {
+        Calendar c = Calendar.getInstance();
+        this.year = c.get(Calendar.YEAR);
+        this.day = c.get(Calendar.DATE);
+        this.month = c.get(Calendar.MONTH);
+    }
     public Date(String date) { //take “mm/dd/yyyy” and create a Date object
         String[] tokens=date.split("/");
         String month = tokens[0];
@@ -157,8 +163,103 @@ public class Date implements Comparable<Date> {
     DOB -1/31/2003: invalid calendar date!
     Expiration date 4/31/2022: invalid calendar date!
     Expiration date 2/30/2011: invalid calendar date!
+
+    expiry not less than current day
+    DOB cannot be greater than current day
+    day must not be greater than month value, CHECK
+    month value must be in 1-12 range, CHECK
+    day value in correct range according to month and leap year, CHECK
+    year must be >= 1900, CHECK
      */
-    public boolean isValid() { //mildly difficult
+    public boolean isValid() { //called on date obj
+        boolean LeapYear = leapYearCheck(this.toString());
+        int month= this.month;
+        if(this.year < 1900){
+            return false;
+        }
+        int numberDaysInMonth = correspondingDaysInMonth(month,leapYearCheck(this.toString()));
+        if(numberDaysInMonth == -1){
+            return false; //ensures month number is 1 < x < 12
+        }
+        //how many days in month?
+        int day=this.day;
+        //does day value fit in month range
+        if(day < 1 || day > numberDaysInMonth){ //ensures # days is 1 < x < numberDaysInMonth
+            return false;
+        }
+        return true;
+    }
+
+    public boolean over18() { //check if member is over 18
+        Calendar c = Calendar.getInstance();
+        c.add(Calendar.YEAR, -18);
+        int CalendarYear = c.get(Calendar.YEAR);
+        int CalendarDay = c.get(Calendar.DATE);
+        int CalendarMonth = c.get(Calendar.MONTH);
+        if (this.year >= CalendarYear){ // checks if DOB is > than limit, meaning under 18
+            if(this.month >= CalendarMonth){
+                if(this.day > CalendarDay){
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    /*
+    checks if the date is greater than the current date, which does not make sense for DOB/join date/other
+    also Expire dates must be greater than the current date I assume
+    returns true is this.date > current date
+     */
+    public boolean futureDateCheck() {
+        Calendar c = Calendar.getInstance();
+        int CalendarYear = c.get(Calendar.YEAR);
+        int CalendarDay = c.get(Calendar.DATE);
+        int CalendarMonth = c.get(Calendar.MONTH); //get the current date
+        if (this.year >= CalendarYear){
+            if(this.month >= CalendarMonth){
+                if(this.day > CalendarDay){
+                    return true;
+                }
+            }
+        }
         return false;
-    } //check if a date is a valid calendar date
+    }
+
+    public int correspondingDaysInMonth(int month, boolean Leapyear){
+        switch(month){
+            case 1:
+                return MonthValue.January;
+            case 2:// february
+                if(Leapyear == true){
+                    return MonthValue.FebruaryLeapyear;
+                }
+                else{
+                    return MonthValue.FebruaryNonLeapyear;
+                }
+            case 3:
+                return MonthValue.March;
+            case 4:
+                return MonthValue.April;
+            case 5:
+                return MonthValue.May;
+            case 6:
+                return MonthValue.June;
+            case 7:
+                return MonthValue.July;
+            case 8:
+                return MonthValue.August;
+            case 9:
+                return MonthValue.September;
+            case 10:
+                return MonthValue.October;
+            case 11:
+                return MonthValue.November;
+            case 12:
+                return MonthValue.December;
+            default:
+                return -1;
+        }
+    }
+
 }

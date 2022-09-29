@@ -7,17 +7,16 @@ days in a leap year.
 
 public class MonthValue {
     public static final int January = 31;//maybe just have to do this
+    public static final int FebruaryLeapyear = 29;
+    public static final int FebruaryNonLeapyear = 28;
     public static final int March = 31;
+    public static final int April = 30;
     public static final int May = 31;
+    public static final int June = 30;
     public static final int July = 31;
     public static final int August = 31;
-    public static final int October = 31;
-    public static final int December = 31;
-    public static final int April = 30;
-    public static final int June = 30;
     public static final int September = 30;
+    public static final int October = 31;
     public static final int November = 30;
-    //feb?
-
-    //may have to make getter methods idk idk
+    public static final int December = 31;
 }
