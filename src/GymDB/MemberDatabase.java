@@ -16,8 +16,10 @@ public class MemberDatabase {
     member is not in the list. You must define a constant identifier “NOT_FOUND” for the value -1. */
     private int find(Member member) {
         for (int i = 0; i < size; i++){
-            if(this.mlist[i].equals(member)){
-                return i;
+            if(this.mlist[i] != null) {
+                if (this.mlist[i].equals(member)) {
+                    return i;
+                }
             }
         }
         return NOT_FOUND;
@@ -40,7 +42,7 @@ public class MemberDatabase {
 
      */
     public boolean add(Member member){
-        if(this.find(member)==1){
+        if(this.find(member) >= 0){
             return false;
         }
         if(this.checkCapacity()==false){ //check capacity if have to increase size by 4
@@ -90,13 +92,14 @@ public class MemberDatabase {
             return false; //member does not exist in array
         }
         Member[] arr = new Member[this.size];
-        for(int i =0; i < this.size; i++){
+        for(int i = 0; i < this.size; i++){
             if(i == memberIndex){
                 continue; //skip this index, dont copy this member over
             }
             arr[i] = this.mlist[i];
         }
 
+        this.mlist = arr;
 
         return true;
     }

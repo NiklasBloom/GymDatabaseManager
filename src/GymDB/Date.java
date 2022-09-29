@@ -69,6 +69,26 @@ public class Date implements Comparable<Date> {
         return intDay;
     }
 
+    @Override
+    public boolean equals(Object obj){
+        if (obj == null) {
+            return false;
+        }
+        if (this.getClass() != obj.getClass()) {
+            return false;
+        }
+        if (obj instanceof Date) {
+            Date dat = (Date) obj; //casting
+            if (dat.day == this.day && dat.month == this.month && dat.year == this.year){
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+        return false;
+    }
+
     /*
     compareTo() method is used when sorting by names
     if s1 > s2, it returns 1
