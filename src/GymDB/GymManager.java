@@ -79,7 +79,7 @@ public class GymManager {
             System.out.println("Expiration date" + expire.toString() + ": invalid calendar date!");
             return false;
         }
-        if(!FutureExpire){ //if expiry isnt in the future
+        if(!FutureExpire){ //if expiry isn't in the future
             System.out.println("Expiration date" + dob.toString() + ": invalid calendar date!");
             return false;
         }
