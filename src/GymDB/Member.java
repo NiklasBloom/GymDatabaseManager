@@ -88,8 +88,9 @@ public class Member implements Comparable<Member>{
         }
         if (obj instanceof Member) {
             Member student = (Member) obj; //casting
-            if (student.fname.equals(this.fname)&& student.lname.equals(this.lname) &&
-                    student.dob.equals(this.dob)){
+            if (student.fname.toLowerCase().equals(this.fname.toLowerCase())
+                    && student.lname.toLowerCase().equals(this.lname.toLowerCase())
+                    && student.dob.equals(this.dob)){
                 return true;
             }
             else {
@@ -101,6 +102,7 @@ public class Member implements Comparable<Member>{
 
     @Override
     public String toString() {
+        //check if membership is expired, and change wording from "expires" to "expired" accordingly
         String s=this.fname + " " + this.lname + ", " + "DOB: "+ this.dob.toString() + "," + " Membership expires "
                 + this.expire.toString() + "," + " Location: " + this.fullLocation();
         return s;

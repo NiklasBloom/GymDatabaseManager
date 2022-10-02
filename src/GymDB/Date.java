@@ -216,12 +216,16 @@ public class Date implements Comparable<Date> {
         int CalendarYear = c.get(Calendar.YEAR);
         int CalendarDay = c.get(Calendar.DATE);
         int CalendarMonth = c.get(Calendar.MONTH); //get the current date
-        if (this.year >= CalendarYear){
-            if(this.month >= CalendarMonth){
+        if (this.year == CalendarYear){
+            if(this.month == CalendarMonth){
                 if(this.day > CalendarDay){
                     return true;
                 }
+            } else if(this.month > CalendarMonth){
+                return true;
             }
+        } else if (this.year > CalendarYear){
+            return true;
         }
         return false;
     }

@@ -3,6 +3,7 @@ package GymDB;
 public class MemberDatabase {
     private Member [] mlist;
     private int size;
+    private boolean isEmpty;
 
 
     public static final int NOT_FOUND = -1;
@@ -10,11 +11,16 @@ public class MemberDatabase {
     public MemberDatabase() {
         this.size=4;
         this.mlist=new Member[4];
+        this.isEmpty = true;
     }
 
     /* The find() method searches a member in the list and returns the index if it is found, it returns -1 if the
     member is not in the list. You must define a constant identifier “NOT_FOUND” for the value -1. */
     private int find(Member member) {
+        if(this.isEmpty){
+            return NOT_FOUND;
+        }
+
         for (int i = 0; i < size; i++){
             if(this.mlist[i] != null) {
                 if (this.mlist[i].equals(member)) {
@@ -59,6 +65,9 @@ public class MemberDatabase {
         mlist[firstNull] = member;
         //firstnull should never be -1, since we grew array if empty, a first null should always exist
 
+        if(this.isEmpty)
+            this.isEmpty = false;
+
         return true;
     }
 
@@ -67,18 +76,16 @@ public class MemberDatabase {
     If there is no room, the add element will grow() the array.
      */
     public boolean checkCapacity(){
+        if(this.isEmpty && (this.size > 0))
+            return true;
+
         boolean arrCapacity = false;
         for(int i = 0; i < this.size; i++){
             if(this.mlist[i] == null){
                 arrCapacity = true;//is any element null? if so then not full
             }
         }
-        if(arrCapacity == false){
-            return false; //the array is full
-        }
-        else {
-            return true; //the array has room for more elements
-        }
+        return arrCapacity;
     }
 
     /*
@@ -92,13 +99,18 @@ public class MemberDatabase {
             return false; //member does not exist in array
         }
         Member[] arr = new Member[this.size];
+        boolean emptyFlag = true;
         for(int i = 0; i < this.size; i++){
-            if(i == memberIndex){
+            if(i == memberIndex)
                 continue; //skip this index, dont copy this member over
+            if(this.mlist[i] != null) {
+                if(emptyFlag)
+                    emptyFlag = false;
+                arr[i] = this.mlist[i];
             }
-            arr[i] = this.mlist[i];
         }
 
+        this.isEmpty = emptyFlag;
         this.mlist = arr;
 
         return true;
@@ -113,8 +125,13 @@ public class MemberDatabase {
     print the array contents as is
      */
     public void print () {
+        if(this.isEmpty) {
+            System.out.println("EMPTY");
+            return;
+        }
         for(int i = 0; i < this.size; i++){
-            System.out.println(this.mlist[i].toString()); //should use member toString method
+            if(this.mlist[i] != null)
+                System.out.println(this.mlist[i].toString()); //uses member toString method
         }
     }
 
@@ -132,8 +149,14 @@ public class MemberDatabase {
     these sorts use bubblesort
      */
     public void printByCounty() {
+        if(this.isEmpty) {
+            System.out.println("EMPTY");
+            return;
+        }
         for (int i = 0; i < size - 1; i++){
             for (int j = 0; j < size - i - 1; j++){
+                if(this.mlist[j] == null || this.mlist[j+1] == null)
+                    continue;
                 if(this.mlist[j].locationNumeric() > this.mlist[j+1].locationNumeric()){
                     Member temp = this.mlist[j];
                     this.mlist[j] = this.mlist[j+1];
@@ -149,8 +172,14 @@ public class MemberDatabase {
     are the same, their order doesn’t matter.
      */
     public void printByExpirationDate() {
+        if(this.isEmpty) {
+            System.out.println("EMPTY");
+            return;
+        }
         for (int i = 0; i < size - 1; i++){
             for (int j = 0; j < size - i - 1; j++){
+                if(this.mlist[j] == null || this.mlist[j+1] == null)
+                    continue;
                 if(this.mlist[j].getExpire().compareTo(this.mlist[j+1].getExpire()) > 0){
                     //getExpire returns a string, am comparing strings oops not work
                     //ok fixed, now getexpire returns Date object, CompareTo should not compare the Dates
@@ -170,8 +199,14 @@ public class MemberDatabase {
     that is, if two members have the same last name, ordered by the first name.
      */
     public void printByName() {
+        if(this.isEmpty) {
+            System.out.println("EMPTY");
+            return;
+        }
         for (int i = 0; i < size - 1; i++){
             for (int j = 0; j < size - i - 1; j++){
+                if(this.mlist[j] == null || this.mlist[j+1] == null)
+                    continue;
                 if(this.mlist[j].compareTo(this.mlist[j+1])>0){ //this should use member compareTo method
                     Member temp = this.mlist[j];
                     this.mlist[j] = this.mlist[j+1];

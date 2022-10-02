@@ -25,9 +25,29 @@ public class GymManager {
                 case "R": //cancel membership
                     rmMember(lineTokens);
                     break;
+                case "P":
+                    System.out.println("\n-list of members-");
+                    DB.print();
+                    System.out.println("-end of list-\n");
+                    break;
+                case "PC":
+                    System.out.println("\n-list of members sorted by county and zipcode-");
+                    DB.printByCounty();
+                    System.out.println("-end of list-\n");
+                    break;
+                case "PN":
+                    System.out.println("\n-list of members sorted by last name, and first name-");
+                    DB.printByName();
+                    System.out.println("-end of list-\n");
+                    break;
+                case "PD":
+                    System.out.println("\n-list of members sorted by membership expiration date-");
+                    DB.printByExpirationDate();
+                    System.out.println("-end of list-\n");
+                    break;
                 default:
                     System.out.println(command + " is an invalid command!");
-                    break quit;
+                    break;
                     /*
                     Commands still gotta do:
                     P: display list of members w/o sorting
@@ -52,44 +72,38 @@ public class GymManager {
     // The date of birth is today or a future date
     // A member who is less than 18 years old
     // An invalid city name, that is, the gym location doesn’t exist
-    private boolean addMember(StringTokenizer dataTokens){
+    private void addMember(StringTokenizer dataTokens){
         String fname = dataTokens.nextToken();
         String lname = dataTokens.nextToken();
+
         Date dob = new Date(dataTokens.nextToken());
-        boolean validDate = dob.isValid(); //returns false if general errors in date.
-        boolean over18 = dob.over18(); //returns true if 18 or older
-        boolean FutureDate = dob.futureDateCheck(); //return true if this.date > current date
-        if(!validDate){
+        if(!dob.isValid()){ //returns false if general errors in date.
             System.out.println("DOB" + dob.toString() + ": invalid calendar date!");
-            return false;
+            return;
         }
-        if(!over18){
+        if(!dob.over18()){ //returns true if 18 or older
             System.out.println("DOB" + dob.toString() + ": must be 18 or older to join!");
-            return false;
+            return;
         }
-        if(FutureDate){
+        if(dob.futureDateCheck()){ //return true if this.date > current date
             System.out.println("DOB" + dob.toString() + ": cannot be today or a future date!");
-            return false;
+            return;
         }
 
         Date expire = new Date(dataTokens.nextToken());
-        boolean validExpire = expire.isValid(); //returns false if general errors in date.
-        boolean FutureExpire = expire.futureDateCheck(); //return true if this.date > current date
-        if(!validExpire){
-            System.out.println("Expiration date" + expire.toString() + ": invalid calendar date!");
-            return false;
+        if(!expire.isValid()){ //returns false if general errors in date.
+            System.out.println("Expiration date " + expire.toString() + ": invalid calendar date!");
+            return;
         }
-        if(!FutureExpire){ //if expiry isn't in the future
-            System.out.println("Expiration date" + dob.toString() + ": invalid calendar date!");
-            return false;
+        if(!expire.futureDateCheck()){ //if expiry isn't in the future
+            System.out.println("Expiration date " + expire.toString() + ": must be a future date!");
+            return;
         }
-        //check if date is valid
-        //check if expired
 
         String locParam = dataTokens.nextToken();
         String locNormalized = locParam.toLowerCase();
         Member.Location location;
-        switch(locNormalized) {
+        switch(locNormalized) {  //TODO: maybe make this its own method
             case "piscataway":
                 location = Member.Location.Piscataway;
                 break;
@@ -107,18 +121,16 @@ public class GymManager {
                 break;
             default:
                 System.out.println(locParam + ": invalid location!");
-                return false;
+                return;
         }
 
         Member newMem = new Member(fname, lname, dob, expire, location);
         if(!DB.add(newMem)) {
             System.out.println(fname + " " + lname + " is already in the database.");
-            return false;
         }
-        return true;
     }
 
-    private boolean rmMember(StringTokenizer dataTokens){
+    private void rmMember(StringTokenizer dataTokens){
         String fname = dataTokens.nextToken();
         String lname = dataTokens.nextToken();
 
@@ -135,8 +147,8 @@ public class GymManager {
         Member rmMem = new Member(fname, lname, dob, null, null);
         if(!DB.remove(rmMem)) {
             System.out.println(fname + " " + lname + " is not in the database.");
-            return false;
         }
-        return true;
     }
+
+
 }
