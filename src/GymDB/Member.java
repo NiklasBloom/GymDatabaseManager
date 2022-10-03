@@ -12,7 +12,20 @@ public class Member implements Comparable<Member>{
         Edison,
         Franklin,
         Piscataway,
-        Somerville,
+        Somerville;
+
+        public static Location parseLocation(String locStr){
+            String locNormalized = locStr.toLowerCase();
+            Member.Location location;
+            return switch (locNormalized) {  //TODO: maybe make this its own method
+                case "piscataway" -> Location.Piscataway;
+                case "bridgewater" -> Location.Bridgewater;
+                case "edison" -> Location.Edison;
+                case "franklin" -> Location.Franklin;
+                case "somerville" -> Location.Somerville;
+                default -> null;
+            };
+        }
     }
 
 
@@ -161,12 +174,6 @@ public class Member implements Comparable<Member>{
                 break;
         }
         return locationNumber;
-    }
-    public static void main(String[] args) { //to test code in this class, GymManager class not done yet
-        Member nik=new Member("Niklas", "Bloom", new Date("6/2/2000"),new Date("6/30/2023"),Location.Piscataway);
-        System.out.println(nik.toString());
-        System.out.println(nik.getLocation());
-
     }
 }
 
