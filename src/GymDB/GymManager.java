@@ -54,8 +54,8 @@ public class GymManager {
                     PC: Display database sorted by county name then zip code
                     PN: Display Database sorted by last name then first name
                     PD: Display list of members in database sorted by Expiry dates
-                    S: To display the Fitness Class Schedule
-                    C: For members to check into Fitness Class
+                    S: To display the Fitness Class Schedule // displays fitness classes with members in the DB
+                    C: For members to check into Fitness Class, //same as add but just using FitnessClass DB?
                     D: For Members to drop fitness class after checking in
                      */
             }
@@ -133,17 +133,12 @@ public class GymManager {
     private void rmMember(StringTokenizer dataTokens){
         String fname = dataTokens.nextToken();
         String lname = dataTokens.nextToken();
+        // since we are removing a member in the database or fitness class
+        // and if it is in the database didnt we already check that the dates are valid
+        //so Idk if we have to check those again in remove I think we can just see if it is in the Database
+        //and if so just use the DB remove method
 
         Date dob = new Date(dataTokens.nextToken());
-        //check if date is valid
-        //check if 18 or older
-        //can maybe make separate methods in Date class to see if:
-            //member is over 18
-            //Valid leap year
-            //Valid month value or day value or year value
-        //Can maybe make a new method in the GymManager class which checks all these Date things automatically
-
-
         Member rmMem = new Member(fname, lname, dob, null, null);
         if(!DB.remove(rmMem)) {
             System.out.println(fname + " " + lname + " is not in the database.");
