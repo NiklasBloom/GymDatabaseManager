@@ -89,8 +89,32 @@ public class FitnessClass extends MemberDatabase{
             default:
                 return null; //just to detect and raise an error
         }
+    }
 
+    public String getClassName() {
+        return this.className;
+    }
 
+    public Time getTime() {
+        return this.time;
+    }
+
+    public int getTimeHour() {
+        return this.time.hour;
+    }
+
+    public static boolean classNameMatch(String className){
+        String classNameUpperCase = className.toUpperCase();
+        switch(classNameUpperCase){
+            case "PILATES":
+                return true;
+            case "SPINNING":
+                return true;
+            case "CARDIO":
+                return true;
+            default:
+                return false;
+        }
     }
 
     /*
@@ -119,5 +143,10 @@ public class FitnessClass extends MemberDatabase{
     @Override
     public boolean CheckInList(Member member) {
         return super.CheckInList(member);
+    }
+
+    @Override
+    public int find(String fname, String lname, Date dob) {
+        return super.find(fname, lname, dob);
     }
 }

@@ -32,6 +32,22 @@ public class MemberDatabase {
         return NOT_FOUND;
     }
 
+    public int find(String fname, String lname, Date dob) {
+        if(isEmpty()){//if true that list is empty
+            return NOT_FOUND;
+        }
+
+        for (int i = 0; i < size; i++){
+            if(this.mlist[i] != null) {
+                if (this.mlist[i].getFname().equals(fname) && this.mlist[i].getLname().equals(lname)
+                && this.mlist[i].getDob().equals(dob)) {
+                    return i;
+                }
+            }
+        }
+        return NOT_FOUND;
+    }
+
     public boolean CheckInList(Member member) {
         if(this.isEmpty()){
             return false;
