@@ -3,7 +3,7 @@ package GymDB;
 public class MemberDatabase {
     private Member [] mlist;
     private int size;
-    private boolean isEmpty;
+
 
 
     public static final int NOT_FOUND = -1;
@@ -11,18 +11,16 @@ public class MemberDatabase {
     public MemberDatabase() {
         this.size=4;
         this.mlist=new Member[4];
-        this.isEmpty = true;
+
     }
 
     //returns isEmpty
-    public boolean checkEmpty(){
-        return this.isEmpty;
-    }
+
 
     /* The find() method searches a member in the list and returns the index if it is found, it returns -1 if the
     member is not in the list. You must define a constant identifier “NOT_FOUND” for the value -1. */
     private int find(Member member) {
-        if(checkEmpty()){
+        if(isEmpty()){//if true that list is empty
             return NOT_FOUND;
         }
 
@@ -35,6 +33,25 @@ public class MemberDatabase {
         }
         return NOT_FOUND;
     }
+
+    public boolean CheckInList(Member member) {
+        if(this.isEmpty()){
+            return false;
+        }
+        if(member == null){
+            return false;
+        }
+        for (int i = 0; i < size; i++){
+            if(this.mlist[i] != null) {
+                if (this.mlist[i].equals(member)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+
 
     /*
     copy array into new array with array size +4
@@ -70,9 +87,6 @@ public class MemberDatabase {
         mlist[firstNull] = member;
         //firstnull should never be -1, since we grew array if empty, a first null should always exist
 
-        if(checkEmpty())
-            this.isEmpty = false;
-
         return true;
     }
 
@@ -81,7 +95,17 @@ public class MemberDatabase {
     If there is no room, the add element will grow() the array.
      */
     public boolean checkCapacity(){
-        if(checkEmpty() && (this.size > 0))
+        boolean arrCapacity = false;
+        for(int i = 0; i < this.size; i++){
+            if(this.mlist[i] == null){
+                arrCapacity = true;//is any element null? if so then not full
+            }
+        }
+        return arrCapacity;
+    }
+
+    public boolean checkSize(){
+        if((this.size > 0))
             return true;
 
         boolean arrCapacity = false;
@@ -91,6 +115,21 @@ public class MemberDatabase {
             }
         }
         return arrCapacity;
+    }
+
+    /*
+    // iterates through array, if an element != null, that is there is a member existing in
+            //the list, then return false, if no member in whole array, return true
+     */
+    public boolean isEmpty() {
+        //dont check for size, because could be any size but we just removed all the members
+        // because we dont make the array smaller when we remove members
+        for (int i = 0; i < size; i++){
+                if (this.mlist[i] != null) {
+                    return false;
+                }
+            }
+        return true;
     }
 
     /*
@@ -115,7 +154,6 @@ public class MemberDatabase {
             }
         }
 
-        this.isEmpty = emptyFlag;
         this.mlist = arr;
 
         return true;
@@ -130,7 +168,7 @@ public class MemberDatabase {
     print the array contents as is
      */
     public void print () {
-        if(checkEmpty()) {
+        if(isEmpty()) {
             System.out.println("EMPTY");
             return;
         }
@@ -159,7 +197,7 @@ public class MemberDatabase {
     these sorts use bubblesort
      */
     public void printByCounty() {
-        if(checkEmpty()) {
+        if(isEmpty()) {
             System.out.println("EMPTY");
             return;
         }
@@ -182,7 +220,7 @@ public class MemberDatabase {
     are the same, their order doesn’t matter.
      */
     public void printByExpirationDate() {
-        if(checkEmpty()) {
+        if(isEmpty()) {
             System.out.println("EMPTY");
             return;
         }
@@ -209,7 +247,7 @@ public class MemberDatabase {
     that is, if two members have the same last name, ordered by the first name.
      */
     public void printByName() {
-        if(checkEmpty()) {
+        if(isEmpty()) {
             System.out.println("EMPTY");
             return;
         }

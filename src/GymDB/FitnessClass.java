@@ -115,4 +115,9 @@ public class FitnessClass extends MemberDatabase{
     public boolean add(Member member) {
         return super.add(member);
     }
+
+    @Override
+    public boolean CheckInList(Member member) {
+        return super.CheckInList(member);
+    }
 }
