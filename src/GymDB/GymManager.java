@@ -158,6 +158,7 @@ o the member has already checked in // just the find method in the fitness class
         String fname = dataTokens.nextToken();
         String lname = dataTokens.nextToken();
         Date dob = new Date(dataTokens.nextToken()); //check if dob is valid
+        Member testMember = new Member(fname, lname, dob);//expire, location both null but will just use this member for the find method
         if (!dob.isValid()) { //returns false if general errors in date.
             System.out.println("DOB " + dob.toString() + ": invalid calendar date!");
             return;
@@ -176,20 +177,20 @@ o the member has already checked in // just the find method in the fitness class
             return;
             //prints //Roy Brooks 8/8/1977 membership expired.
         }
-        if (DB.find(fname, lname, dob) == -1) {
+        if (DB.find(testMember) == -1) {
             //Bill Scanlan 11/20/2003 is not in the database.
             System.out.println(fname + " " + lname + " " + dob.toString() + ": is not in the database.");
             return;
         }
         for (FitnessClass aClass : classes) {
-            if (aClass.find(fname, lname, dob) >= 0 && aClass.getClassName().equals(fitClass)) {
+            if (aClass.find(testMember) >= 0 && aClass.getClassName().equals(fitClass)) {
                 System.out.println(fname + " " + lname + " " + "has already checked in " + aClass.getClassName());
                 //Mary Lindsey has already checked in Spinning.
             }
             aClass.print();
         }
         for (FitnessClass aClass : classes) {
-            if (aClass.find(fname, lname, dob) >= 0 && !aClass.getClassName().equals(fitClass) &&
+            if (aClass.find(testMember) >= 0 && !aClass.getClassName().equals(fitClass) &&
             aClass.getTimeHour() == 9) {
                 if(aClass.getTimeHour() == 14){
                     //Cardio time conflict -- Mary Lindsey has already checked in Spinning.
@@ -199,7 +200,7 @@ o the member has already checked in // just the find method in the fitness class
                 }
             }
         }
-        int memberIndex = DB.find(fname, lname, dob);
+        int memberIndex = DB.find(testMember);
         for (FitnessClass aClass : classes) {// if passes all the above checks
             if (aClass.getClassName().equals(fitClass)){
                 //aClass.add(); // add handles .grow and the size, just need member reference

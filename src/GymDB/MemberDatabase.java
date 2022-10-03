@@ -12,7 +12,13 @@ public class MemberDatabase {
 
     }
 
-    //returns isEmpty
+    public Member[] getMlist(){
+        return this.mlist;
+    }
+
+    public int getSize(){
+        return this.size;
+    }
 
 
     /* The find() method searches a member in the list and returns the index if it is found, it returns -1 if the

@@ -149,4 +149,21 @@ public class FitnessClass extends MemberDatabase{
     public int find(String fname, String lname, Date dob) {
         return super.find(fname, lname, dob);
     }
+
+    public int find(Member member) {
+        if(isEmpty()){//if true that list is empty
+            return NOT_FOUND;
+        }
+        int size = this.getSize();
+        Member[] memlist = this.getMlist();
+
+        for (int i = 0; i < size; i++){
+            if(memlist[i] != null) {
+                if (memlist[i].equals(member)) {
+                    return i;
+                }
+            }
+        }
+        return NOT_FOUND;
+    }
 }

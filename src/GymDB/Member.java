@@ -25,6 +25,15 @@ public class Member implements Comparable<Member>{
         this.expire = expire;
     }
 
+    public Member(String fname, String lname,
+                  Date dob) {
+        this.location = location;
+        this.fname = fname;
+        this.lname = lname;
+        this.dob = null;
+        this.expire = null;
+    }
+
     public String getFname(){
         return this.fname;
     }
