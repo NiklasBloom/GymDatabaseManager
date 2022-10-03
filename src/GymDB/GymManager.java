@@ -148,7 +148,7 @@ o there is a time conflict with other fitness classes // find method in other tw
 o the member has already checked in // just the find method in the fitness class
      */
     private void checkInMember(StringTokenizer dataTokens) {
-        String classStr = dataTokens.nextToken().toUpperCase();
+        String classStr = dataTokens.nextToken();
 
         String fname = dataTokens.nextToken();
         String lname = dataTokens.nextToken();
@@ -184,7 +184,7 @@ o the member has already checked in // just the find method in the fitness class
 
         FitnessClass choiceClass = null;
         for(FitnessClass aClass : classes){ //finds the chosen class and checks if already a member
-            if(aClass.getClassName().toUpperCase().equals(classStr)){
+            if(aClass.getClassName().equalsIgnoreCase(classStr)){
                 if (aClass.getMember(dbMember) != null) {
                     System.out.println(fname + " " + lname + " has already checked in " + aClass.getClassName());
                     return;

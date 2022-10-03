@@ -54,7 +54,7 @@ public class MemberDatabase {
         }
         for (int i = 0; i < size; i++){
             if(this.mlist[i] != null) {
-                if (this.mlist[i].equals(member)) {
+                if(this.mlist[i].equals(member)) {
                     return this.mlist[i];
                 }
             }

@@ -27,10 +27,11 @@ public class Member implements Comparable<Member>{
 
     public Member(String fname, String lname,
                   Date dob) {
-        this.location = location;
+
         this.fname = fname;
         this.lname = lname;
-        this.dob = null;
+        this.dob = dob;
+        this.location = null;
         this.expire = null;
     }
 
@@ -92,19 +93,11 @@ public class Member implements Comparable<Member>{
         if (obj == null) {
             return false;
         }
-        if (this.getClass() != obj.getClass()) {
-            return false;
-        }
         if (obj instanceof Member) {
             Member student = (Member) obj; //casting
-            if (student.fname.toLowerCase().equals(this.fname.toLowerCase())
-                    && student.lname.toLowerCase().equals(this.lname.toLowerCase())
-                    && student.dob.equals(this.dob)){
-                return true;
-            }
-            else {
-                return false;
-            }
+            return student.fname.equalsIgnoreCase(this.fname.toLowerCase())
+                    && student.lname.equalsIgnoreCase(this.lname)
+                    && student.dob.equals(this.dob);
         }
         return false;
     }
