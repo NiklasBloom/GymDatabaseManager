@@ -8,7 +8,7 @@ public class GymManager {
     public void run(){
         System.out.println("Gym Manager running...");
         DB = new MemberDatabase();
-        classes = new FitnessClass[]{new FitnessClass("pilates"), new FitnessClass("spinning"), new FitnessClass("cardio")};
+        classes = new FitnessClass[]{new FitnessClass("Pilates"), new FitnessClass("Spinning"), new FitnessClass("Cardio")};
 
         Scanner sc = new Scanner(System.in);
         String currentLine = sc.nextLine();
@@ -17,52 +17,55 @@ public class GymManager {
         while(true){
             StringTokenizer lineTokens = new StringTokenizer(currentLine);
 
-            String command = lineTokens.nextToken();
-            switch(command){
-                case "Q":
-                    break quit;
-                case "A": //add member
-                    addMember(lineTokens);
-                    break;
-                case "R": //cancel membership
-                    rmMember(lineTokens);
-                    break;
-                case "P":
-                    System.out.println("\n-list of members-");
-                    DB.print();
-                    System.out.println("-end of list-\n");
-                    break;
-                case "PC":
-                    System.out.println("\n-list of members sorted by county and zipcode-");
-                    DB.printByCounty();
-                    System.out.println("-end of list-\n");
-                    break;
-                case "PN":
-                    System.out.println("\n-list of members sorted by last name, and first name-");
-                    DB.printByName();
-                    System.out.println("-end of list-\n");
-                    break;
-                case "PD":
-                    System.out.println("\n-list of members sorted by membership expiration date-");
-                    DB.printByExpirationDate();
-                    System.out.println("-end of list-\n");
-                    break;
-                case "S":
-                    System.out.println("\n-Fitness classes-");
-                    break;
-                default:
-                    System.out.println(command + " is an invalid command!");
-                    break;
-                    /*
-                    TODO:
-                    S: To display the Fitness Class Schedule // displays fitness classes with members in the DB
-                    C: For members to check into Fitness Class, //same as add but just using FitnessClass DB?
-                    D: For Members to drop fitness class after checking in
-                     */
+            if(lineTokens.hasMoreTokens()) {
+                String command = lineTokens.nextToken();
+                switch (command) {
+                    case "Q":
+                        break quit;
+                    case "A": //add member
+                        addMember(lineTokens);
+                        break;
+                    case "R": //cancel membership
+                        rmMember(lineTokens);
+                        break;
+                    case "P":
+                        System.out.println("\n-list of members-");
+                        DB.print();
+                        System.out.println("-end of list-\n");
+                        break;
+                    case "PC":
+                        System.out.println("\n-list of members sorted by county and zipcode-");
+                        DB.printByCounty();
+                        System.out.println("-end of list-\n");
+                        break;
+                    case "PN":
+                        System.out.println("\n-list of members sorted by last name, and first name-");
+                        DB.printByName();
+                        System.out.println("-end of list-\n");
+                        break;
+                    case "PD":
+                        System.out.println("\n-list of members sorted by membership expiration date-");
+                        DB.printByExpirationDate();
+                        System.out.println("-end of list-\n");
+                        break;
+                    case "S":
+                        System.out.println("\n-Fitness classes-");
+                        for (FitnessClass aClass : classes) aClass.print();
+                        break;
+                    default:
+                        System.out.println(command + " is an invalid command!");
+                        break;
+                        /*
+                        TODO:
+                        S: To display the Fitness Class Schedule // displays fitness classes with members in the DB
+                        C: For members to check into Fitness Class, //same as add but just using FitnessClass DB?
+                        D: For Members to drop fitness class after checking in
+                         */
+                }
             }
-
-            //regex to match one or two uppercase characters: \b[A-Z]\b|\b[A-Z][A-Z]\b
-            currentLine = sc.nextLine();
+            do{
+                currentLine = sc.nextLine();
+            } while (currentLine.length() == 0);   //skips blank lines
         }
         System.out.println("Gym Manager terminated.");
     }
@@ -79,15 +82,15 @@ public class GymManager {
 
         Date dob = new Date(dataTokens.nextToken());
         if(!dob.isValid()){ //returns false if general errors in date.
-            System.out.println("DOB" + dob.toString() + ": invalid calendar date!");
+            System.out.println("DOB " + dob.toString() + ": invalid calendar date!");
             return;
         }
         if(!dob.over18()){ //returns true if 18 or older
-            System.out.println("DOB" + dob.toString() + ": must be 18 or older to join!");
+            System.out.println("DOB " + dob.toString() + ": must be 18 or older to join!");
             return;
         }
         if(dob.futureDateCheck()){ //return true if this.date > current date
-            System.out.println("DOB" + dob.toString() + ": cannot be today or a future date!");
+            System.out.println("DOB " + dob.toString() + ": cannot be today or a future date!");
             return;
         }
 
@@ -96,33 +99,20 @@ public class GymManager {
             System.out.println("Expiration date " + expire.toString() + ": invalid calendar date!");
             return;
         }
-        if(!expire.futureDateCheck()){ //if expiry isn't in the future
-            System.out.println("Expiration date " + expire.toString() + ": must be a future date!");
-            return;
-        }
 
         String locParam = dataTokens.nextToken();
         String locNormalized = locParam.toLowerCase();
         Member.Location location;
-        switch(locNormalized) {  //TODO: maybe make this its own method
-            case "piscataway":
-                location = Member.Location.Piscataway;
-                break;
-            case "bridgewater":
-                location = Member.Location.Bridgewater;
-                break;
-            case "edison":
-                location = Member.Location.Edison;
-                break;
-            case "franklin":
-                location = Member.Location.Franklin;
-                break;
-            case "somerville":
-                location = Member.Location.Somerville;
-                break;
-            default:
+        switch (locNormalized) {  //TODO: maybe make this its own method
+            case "piscataway" -> location = Member.Location.Piscataway;
+            case "bridgewater" -> location = Member.Location.Bridgewater;
+            case "edison" -> location = Member.Location.Edison;
+            case "franklin" -> location = Member.Location.Franklin;
+            case "somerville" -> location = Member.Location.Somerville;
+            default -> {
                 System.out.println(locParam + ": invalid location!");
                 return;
+            }
         }
 
         Member newMem = new Member(fname, lname, dob, expire, location);
@@ -146,5 +136,19 @@ public class GymManager {
         }
     }
 
+    private void checkInMember(StringTokenizer dataTokens){
+        String fitClass = dataTokens.nextToken(); //check if class exists
+
+        String fname = dataTokens.nextToken();
+        String lname = dataTokens.nextToken();
+        Date dob = new Date(dataTokens.nextToken()); //check if dob is valid
+        //check if member exists
+        //check if membership is expired
+
+        //check if member is checked in this class
+        //check for time conflict with another class
+
+
+    }
 
 }

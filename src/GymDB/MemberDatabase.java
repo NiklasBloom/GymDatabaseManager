@@ -4,8 +4,6 @@ public class MemberDatabase {
     private Member [] mlist;
     private int size;
 
-
-
     public static final int NOT_FOUND = -1;
 
     public MemberDatabase() {
@@ -73,7 +71,7 @@ public class MemberDatabase {
         if(this.find(member) >= 0){
             return false;
         }
-        if(this.checkCapacity()==false){ //check capacity if have to increase size by 4
+        if(!this.checkCapacity()){ //check capacity if have to increase size by 4
             this.grow();
         }
         //get index of first null element in array
@@ -104,19 +102,6 @@ public class MemberDatabase {
         return arrCapacity;
     }
 
-    public boolean checkSize(){
-        if((this.size > 0))
-            return true;
-
-        boolean arrCapacity = false;
-        for(int i = 0; i < this.size; i++){
-            if(this.mlist[i] == null){
-                arrCapacity = true;//is any element null? if so then not full
-            }
-        }
-        return arrCapacity;
-    }
-
     /*
     // iterates through array, if an element != null, that is there is a member existing in
             //the list, then return false, if no member in whole array, return true
@@ -125,10 +110,10 @@ public class MemberDatabase {
         //dont check for size, because could be any size but we just removed all the members
         // because we dont make the array smaller when we remove members
         for (int i = 0; i < size; i++){
-                if (this.mlist[i] != null) {
-                    return false;
-                }
+            if (this.mlist[i] != null) {
+                return false;
             }
+        }
         return true;
     }
 

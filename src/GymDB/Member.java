@@ -102,9 +102,10 @@ public class Member implements Comparable<Member>{
 
     @Override
     public String toString() {
-        //check if membership is expired, and change wording from "expires" to "expired" accordingly
-        String s=this.fname + " " + this.lname + ", " + "DOB: "+ this.dob.toString() + "," + " Membership expires "
-                + this.expire.toString() + "," + " Location: " + this.fullLocation();
+        //checks if membership is expired, and change wording from "expires" to "expired" accordingly
+        String s = this.fname + " " + this.lname + ", DOB: " + this.dob.toString()
+                + ((this.expire.futureDateCheck()) ? ", Membership expires " : ", Membership expired ")
+                + this.expire.toString() + ", Location: " + this.fullLocation();
         return s;
     }
     //April March, DOB: 3/31/1990, Membership expires 6/30/2023, Location: PISCATAWAY, 08854, MIDDLESEX

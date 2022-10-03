@@ -26,8 +26,8 @@ public class FitnessClass extends MemberDatabase{
 
     public enum Time{  //define the time of a fitness class in hh:mm
         PILATES(9 ,30),
-        SPINNING(14 , 00),
-        CARDIO(14 ,00);
+        SPINNING(14 , 0),
+        CARDIO(14 , 0);
 
         private final int hour;
         private final int minutes;
@@ -38,7 +38,7 @@ public class FitnessClass extends MemberDatabase{
         }
         @Override
         public String toString(){
-            return this.hour + ":" + this.minutes;
+            return String.format("%d:%02d", this.hour, this.minutes);
         }
     }
 
@@ -101,7 +101,7 @@ public class FitnessClass extends MemberDatabase{
     @Override
     public void print() {
         System.out.println(this.className + " - " + this.instructor + " " + this.time);
-        if(!checkEmpty()) {
+        if(!isEmpty()) {
             System.out.println("\t** participants **");
             super.print();
         }
