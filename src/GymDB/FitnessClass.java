@@ -40,6 +40,10 @@ public class FitnessClass extends MemberDatabase{
         public String toString(){
             return String.format("%d:%02d", this.hour, this.minutes);
         }
+
+        public boolean equals(Time otherTime){
+            return (this.hour == otherTime.hour && this.minutes == otherTime.minutes);
+        }
     }
 
     public enum Instructor{
@@ -103,20 +107,6 @@ public class FitnessClass extends MemberDatabase{
         return this.time.hour;
     }
 
-    public static boolean classNameMatch(String className){
-        String classNameUpperCase = className.toUpperCase();
-        switch(classNameUpperCase){
-            case "PILATES":
-                return true;
-            case "SPINNING":
-                return true;
-            case "CARDIO":
-                return true;
-            default:
-                return false;
-        }
-    }
-
     /*
     Pilates - JENNIFER 9:30
         ** participants **
@@ -141,13 +131,8 @@ public class FitnessClass extends MemberDatabase{
     }
 
     @Override
-    public boolean CheckInList(Member member) {
-        return super.CheckInList(member);
-    }
-
-    @Override
-    public int find(String fname, String lname, Date dob) {
-        return super.find(fname, lname, dob);
+    public Member getMember(Member member) {
+        return super.getMember(member);
     }
 
     public int find(Member member) {

@@ -55,14 +55,14 @@ public class GymManager {
                         break;
                     case "C":
                         checkInMember(lineTokens);
+                        break;
                     case "D":
+                        break;
                     default:
                         System.out.println(command + " is an invalid command!");
                         break;
                         /*
                         TODO:
-                        S: To display the Fitness Class Schedule // displays fitness classes with members in the DB
-                        C: For members to check into Fitness Class, //same as add but just using FitnessClass DB?
                         D: For Members to drop fitness class after checking in
                          */
                 }
@@ -148,17 +148,12 @@ o there is a time conflict with other fitness classes // find method in other tw
 o the member has already checked in // just the find method in the fitness class
      */
     private void checkInMember(StringTokenizer dataTokens) {
-        String fitClass = dataTokens.nextToken(); //check if class exists
-        boolean FitClassMatch = FitnessClass.classNameMatch(fitClass);
-        if(!FitClassMatch){
-            //abc class does not exist.
-            System.out.println(fitClass + " class does not exist.");
-            return;
-        }
+        String classStr = dataTokens.nextToken().toUpperCase();
+
         String fname = dataTokens.nextToken();
         String lname = dataTokens.nextToken();
+
         Date dob = new Date(dataTokens.nextToken()); //check if dob is valid
-        Member testMember = new Member(fname, lname, dob);//expire, location both null but will just use this member for the find method
         if (!dob.isValid()) { //returns false if general errors in date.
             System.out.println("DOB " + dob.toString() + ": invalid calendar date!");
             return;
@@ -171,42 +166,51 @@ o the member has already checked in // just the find method in the fitness class
             System.out.println("DOB " + dob.toString() + ": cannot be today or a future date!");
             return;
         }
-        Date expire = new Date(dataTokens.nextToken());
+
+        Member testMember = new Member(fname, lname, dob); //use given info to search for member in DB
+
+        //get the reference to the member in the DB, if it matches
+        Member dbMember = DB.getMember(testMember);
+        if(dbMember == null){
+            System.out.println(fname + " " + lname + " " + dob.toString() + " is not in the database.");
+            return;
+        }
+
+        Date expire = dbMember.getExpire();
         if (!expire.futureDateCheck()) {
-            System.out.println(fname + " " + lname + " " + dob.toString() + ": membership expired.");
-            return;
-            //prints //Roy Brooks 8/8/1977 membership expired.
-        }
-        if (DB.find(testMember) == -1) {
-            //Bill Scanlan 11/20/2003 is not in the database.
-            System.out.println(fname + " " + lname + " " + dob.toString() + ": is not in the database.");
+            System.out.println(fname + " " + lname + " " + dob.toString() + " membership expired.");
             return;
         }
-        for (FitnessClass aClass : classes) {
-            if (aClass.find(testMember) >= 0 && aClass.getClassName().equals(fitClass)) {
-                System.out.println(fname + " " + lname + " " + "has already checked in " + aClass.getClassName());
-                //Mary Lindsey has already checked in Spinning.
+
+        FitnessClass choiceClass = null;
+        for(FitnessClass aClass : classes){ //finds the chosen class and checks if already a member
+            if(aClass.getClassName().toUpperCase().equals(classStr)){
+                if (aClass.getMember(dbMember) != null) {
+                    System.out.println(fname + " " + lname + " has already checked in " + aClass.getClassName());
+                    return;
+                } else {
+                    choiceClass = aClass;
+                    break;
+                }
             }
-            aClass.print();
         }
-        for (FitnessClass aClass : classes) {
-            if (aClass.find(testMember) >= 0 && !aClass.getClassName().equals(fitClass) &&
-            aClass.getTimeHour() == 9) {
-                if(aClass.getTimeHour() == 14){
-                    //Cardio time conflict -- Mary Lindsey has already checked in Spinning.
-                    System.out.println(fitClass + " time conflict --" +
-                            fname + " " + lname + " " + "has already checked in " + aClass.getClassName());
+        if(choiceClass == null){ //checks if class exists
+            System.out.println(classStr + " class does not exist.");
+            return;
+        }
+
+        for (FitnessClass aClass : classes) { //checks for time conflict
+            if (aClass != choiceClass) {
+                if (aClass.getMember(dbMember) != null && aClass.getTime().equals(choiceClass.getTime())){
+                    System.out.println(classStr + " time conflict -- " +
+                            fname + " " + lname + " has already checked in " + aClass.getClassName() + ".");
                     return;
                 }
             }
         }
-        int memberIndex = DB.find(testMember);
-        for (FitnessClass aClass : classes) {// if passes all the above checks
-            if (aClass.getClassName().equals(fitClass)){
-                //aClass.add(); // add handles .grow and the size, just need member reference
 
-            }
-        }
-
+        //having passed all the above checks, adds the member to the chosen class
+        choiceClass.add(dbMember);
+        System.out.println(fname + " " + lname + " checked in " + choiceClass.getClassName());
     }
 }

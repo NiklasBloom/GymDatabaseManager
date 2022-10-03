@@ -38,37 +38,28 @@ public class MemberDatabase {
         return NOT_FOUND;
     }
 
-    public int find(String fname, String lname, Date dob) {
-        if(isEmpty()){//if true that list is empty
-            return NOT_FOUND;
-        }
-
-        for (int i = 0; i < size; i++){
-            if(this.mlist[i] != null) {
-                if (this.mlist[i].getFname().equals(fname) && this.mlist[i].getLname().equals(lname)
-                && this.mlist[i].getDob().equals(dob)) {
-                    return i;
-                }
-            }
-        }
-        return NOT_FOUND;
-    }
-
-    public boolean CheckInList(Member member) {
+    /*
+        Returns a reference to a Member in mlist that matches the given Member
+        The given member only requires an fname, lname, and DOB, the other params
+        do not matter for this method.
+     */
+    public Member getMember(Member member) {
         if(this.isEmpty()){
-            return false;
+            return null;
         }
         if(member == null){
-            return false;
+            return null;
+        } else if (member.getFname() == null || member.getLname() == null || member.getDob() == null){
+            return null;
         }
         for (int i = 0; i < size; i++){
             if(this.mlist[i] != null) {
                 if (this.mlist[i].equals(member)) {
-                    return true;
+                    return this.mlist[i];
                 }
             }
         }
-        return false;
+        return null;
     }
 
 
