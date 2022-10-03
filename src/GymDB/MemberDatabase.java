@@ -14,10 +14,15 @@ public class MemberDatabase {
         this.isEmpty = true;
     }
 
+    //returns isEmpty
+    public boolean checkEmpty(){
+        return this.isEmpty;
+    }
+
     /* The find() method searches a member in the list and returns the index if it is found, it returns -1 if the
     member is not in the list. You must define a constant identifier “NOT_FOUND” for the value -1. */
     private int find(Member member) {
-        if(this.isEmpty){
+        if(checkEmpty()){
             return NOT_FOUND;
         }
 
@@ -65,7 +70,7 @@ public class MemberDatabase {
         mlist[firstNull] = member;
         //firstnull should never be -1, since we grew array if empty, a first null should always exist
 
-        if(this.isEmpty)
+        if(checkEmpty())
             this.isEmpty = false;
 
         return true;
@@ -76,7 +81,7 @@ public class MemberDatabase {
     If there is no room, the add element will grow() the array.
      */
     public boolean checkCapacity(){
-        if(this.isEmpty && (this.size > 0))
+        if(checkEmpty() && (this.size > 0))
             return true;
 
         boolean arrCapacity = false;
@@ -125,13 +130,18 @@ public class MemberDatabase {
     print the array contents as is
      */
     public void print () {
-        if(this.isEmpty) {
+        if(checkEmpty()) {
             System.out.println("EMPTY");
             return;
         }
         for(int i = 0; i < this.size; i++){
-            if(this.mlist[i] != null)
-                System.out.println(this.mlist[i].toString()); //uses member toString method
+            if(this.mlist[i] != null) {
+                if(this instanceof FitnessClass){   //FitnessClass requires tabs
+                    System.out.println("\t\t" + this.mlist[i].toString()); //uses member toString method
+                } else {                            //standard member DB; no tabs
+                    System.out.println(this.mlist[i].toString());
+                }
+            }
         }
     }
 
@@ -149,7 +159,7 @@ public class MemberDatabase {
     these sorts use bubblesort
      */
     public void printByCounty() {
-        if(this.isEmpty) {
+        if(checkEmpty()) {
             System.out.println("EMPTY");
             return;
         }
@@ -172,7 +182,7 @@ public class MemberDatabase {
     are the same, their order doesn’t matter.
      */
     public void printByExpirationDate() {
-        if(this.isEmpty) {
+        if(checkEmpty()) {
             System.out.println("EMPTY");
             return;
         }
@@ -199,7 +209,7 @@ public class MemberDatabase {
     that is, if two members have the same last name, ordered by the first name.
      */
     public void printByName() {
-        if(this.isEmpty) {
+        if(checkEmpty()) {
             System.out.println("EMPTY");
             return;
         }
@@ -223,13 +233,5 @@ public class MemberDatabase {
             }
         }
         this.print();
-    }
-
-
-    public static void main(String[] args) { //to test code in this class, GymManager class not done yet
-        Member nik=new Member("Niklas", "Bloom", new Date("6/2/2000"),new Date("6/30/2023"), Member.Location.Piscataway);
-        System.out.println(nik.toString());
-        System.out.println(nik.getLocation());
-
     }
 }

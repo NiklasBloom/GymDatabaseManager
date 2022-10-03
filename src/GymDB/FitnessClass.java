@@ -20,18 +20,11 @@ the schedule is for “today” only, you do not need to handle a multiple-day s
  */
 
 public class FitnessClass extends MemberDatabase{
-    //In GymManager I think we have to make another DB for Fitness classes?
-    //and then we add fitness class objects??
-    //or? should it also have the member information?
-    //do lines with member checkins
-    //first, for members to check into fitness class must already be a member
     private Time time;
     private Instructor instructor;
     private String className;
-    //how would we test time conflicts?
-    //that would be between objects
 
-    public enum Time{
+    public enum Time{  //define the time of a fitness class in hh:mm
         PILATES(9 ,30),
         SPINNING(14 , 00),
         CARDIO(14 ,00);
@@ -43,7 +36,11 @@ public class FitnessClass extends MemberDatabase{
             this.hour = hour;
             this.minutes = minutes;
         }
-    } //define the time of a fitness class in hh:mm
+        @Override
+        public String toString(){
+            return this.hour + ":" + this.minutes;
+        }
+    }
 
     public enum Instructor{
         JENNIFER,
@@ -65,8 +62,6 @@ public class FitnessClass extends MemberDatabase{
         this.className = fitnessClass;
         this.instructor = setInstructor(fitnessClass);
         this.time = setTime(fitnessClass);
-        //method which returns instructor according to fitness class
-        //method which returns time according to fitness class
     }
     public Instructor setInstructor(String fitnessClass){
         String fitnessClassLowerCase = fitnessClass.toLowerCase();
@@ -78,8 +73,7 @@ public class FitnessClass extends MemberDatabase{
             case "spinning":
                 return Instructor.DENISE;
             default:
-                return null; // can change this to whatever else u desire if wanna change
-            //just to check if null, then print error
+                return null; //just to detect and raise an error
         }
     }
 
@@ -93,32 +87,32 @@ public class FitnessClass extends MemberDatabase{
             case "spinning":
                 return Time.SPINNING;
             default:
-                return null; // can change this to whatever else u desire if wanna change
-            //just to check if null, then print error
+                return null; //just to detect and raise an error
         }
 
 
     }
-    @Override
-    public void print() {
-        super.print();
-    }
-    @Override
-    public boolean remove(Member member) {
-        super.remove(member); // I think this will return a value?
-        return true;
-    }
-
-    @Override
-    public boolean add(Member member) {
-        super.add(member);
-        return true;
-    }
-
 
     /*
     Pilates - JENNIFER 9:30
         ** participants **
             Jane Doe, DOB: 5/1/1996, Membership expires 3/30/2023, Location: EDISON, 08837, MIDDLESEX
      */
+    @Override
+    public void print() {
+        System.out.println(this.className + " - " + this.instructor + " " + this.time);
+        if(!checkEmpty()) {
+            System.out.println("\t** participants **");
+            super.print();
+        }
+    }
+    @Override
+    public boolean remove(Member member) {
+        return super.remove(member);
+    }
+
+    @Override
+    public boolean add(Member member) {
+        return super.add(member);
+    }
 }

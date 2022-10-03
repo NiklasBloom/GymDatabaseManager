@@ -4,9 +4,11 @@ import java.util.StringTokenizer;
 
 public class GymManager {
     private MemberDatabase DB;
+    private FitnessClass[] classes;
     public void run(){
         System.out.println("Gym Manager running...");
         DB = new MemberDatabase();
+        classes = new FitnessClass[]{new FitnessClass("pilates"), new FitnessClass("spinning"), new FitnessClass("cardio")};
 
         Scanner sc = new Scanner(System.in);
         String currentLine = sc.nextLine();
@@ -45,15 +47,14 @@ public class GymManager {
                     DB.printByExpirationDate();
                     System.out.println("-end of list-\n");
                     break;
+                case "S":
+                    System.out.println("\n-Fitness classes-");
+                    break;
                 default:
                     System.out.println(command + " is an invalid command!");
                     break;
                     /*
-                    Commands still gotta do:
-                    P: display list of members w/o sorting
-                    PC: Display database sorted by county name then zip code
-                    PN: Display Database sorted by last name then first name
-                    PD: Display list of members in database sorted by Expiry dates
+                    TODO:
                     S: To display the Fitness Class Schedule // displays fitness classes with members in the DB
                     C: For members to check into Fitness Class, //same as add but just using FitnessClass DB?
                     D: For Members to drop fitness class after checking in
