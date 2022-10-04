@@ -11,12 +11,14 @@ import java.util.StringTokenizer;
 
 /**
  * Defines a GymManager object with the main run() method, helpers to execute commands, and databases to store information.
- *
  */
 public class GymManager {
     private MemberDatabase DB;
     private FitnessClass[] classes;
 
+    /**
+     * Uses a while loop to continuously read command lines from standard input and manage the member and class databases using helper methods.
+     */
     public void run() {
         System.out.println("Gym Manager running...");
         DB = new MemberDatabase();
@@ -39,8 +41,11 @@ public class GymManager {
         System.out.println("Gym Manager terminated.");
     }
 
-    //returns true if we get a Q signal to signify termination of the program
-    //returns false otherwise, signifying we should continue
+    /**
+     * Parses standard input into appropriate commands and passes information to helper methods to handle command work.
+     * @param lineTokens StringTokenizer object of the command line to parse.
+     * @return true if we get a Q command to signify termination of the program, false otherwise; signifying run() should continue.
+    */
     private boolean commandParser(StringTokenizer lineTokens){
         String command = lineTokens.nextToken();
         switch (command) {
@@ -106,15 +111,22 @@ public class GymManager {
     }
 
 
-    //rejects if:
-    // Any date that is not a valid calendar date
-    // The date of birth is today or a future date
-    // A member who is less than 18 years old
-    // An invalid city name, that is, the gym location doesn’t exist
+    /**
+     * Helper method to execute the "A" command and add a member to the MemberDatabase DB.
+     * Reads member information from a StringTokenizer of the command line.
+     * Uses helper methods from the Date class to check Date parameters' validity
+     * rejects if:
+     *     Any date is not a valid calendar date
+     *     The date of birth is today or a future date
+     *     Member is less than 18 years old
+     *     City name is invalid, that is, the gym location doesn’t exist
+     *
+     * Prints result of command execution to terminal.
+     * @param dataTokens StringTokenizer object of the necessary information to process given by the command line.
+     */
     private void addMember(StringTokenizer dataTokens) {
         String fname = dataTokens.nextToken();
         String lname = dataTokens.nextToken();
-
         Date dob = new Date(dataTokens.nextToken());
         if (!dob.isValid()) { //returns false if general errors in date.
             System.out.println("DOB " + dob.toString() + ": invalid calendar date!");
@@ -134,14 +146,12 @@ public class GymManager {
             System.out.println("Expiration date " + expire.toString() + ": invalid calendar date!");
             return;
         }
-
         String locParam = dataTokens.nextToken();
         Member.Location location = Member.Location.parseLocation(locParam);
         if(location == null) {
             System.out.println(locParam + ": invalid location!");
             return;
         }
-
         Member newMem = new Member(fname, lname, dob, expire, location);
         if (!DB.add(newMem)) {
             System.out.println(fname + " " + lname + " is already in the database.");
@@ -150,6 +160,12 @@ public class GymManager {
         }
     }
 
+    /**
+     * Helper method to execute the "R" command and cancel/remove a member from the MemberDatabase DB.
+     * Reads member information from a StringTokenizer of the command line.
+     * Prints result of command execution to terminal.
+     * @param dataTokens StringTokenizer object of the necessary information to process given by the command line.
+     */
     private void rmMember(StringTokenizer dataTokens){
         String fname = dataTokens.nextToken();
         String lname = dataTokens.nextToken();
@@ -162,22 +178,24 @@ public class GymManager {
         }
     }
 
-
-    /*
-    Your software shall not allow a member to check in if
-o the membership has expired //just have to use the futureDateCheck() method
-o the member does not exist //just the find method
-o the date of birth is invalid //just the isvalid method
-o the fitness class does not exist //idk just has to match spelling
-o there is a time conflict with other fitness classes // find method in other two fitness classes?
-o the member has already checked in // just the find method in the fitness class
+    /**
+     * Helper method to execute the "C" command and add a member to a class schedule.
+     * Reads member information from a StringTokenizer of the command line.
+     * rejects if:
+     *      the membership has expired (by checking if expiration is a future date)
+     *      the member does not exist (by checking if the member is in the database)
+     *      the date of birth is invalid (using the isValid() method of Date class)
+     *      the fitness class does not exist
+     *      there is a time conflict with other fitness classes (by checking if they are a member of a class at the same time)
+     *      the member has already checked in (by checking if they are already a member of the chosen class)
+     *
+     * Prints result of command execution to terminal.
+     * @param dataTokens StringTokenizer object of the necessary information to process given by the command line.
      */
     private void checkInMember(StringTokenizer dataTokens) {
         String classStr = dataTokens.nextToken();
-
         String fname = dataTokens.nextToken();
         String lname = dataTokens.nextToken();
-
         Date dob = new Date(dataTokens.nextToken()); //check if dob is valid
         if (!dob.isValid()) { //returns false if general errors in date.
             System.out.println("DOB " + dob.toString() + ": invalid calendar date!");
@@ -191,22 +209,18 @@ o the member has already checked in // just the find method in the fitness class
             System.out.println("DOB " + dob.toString() + ": cannot be today or a future date!");
             return;
         }
-
         Member testMember = new Member(fname, lname, dob); //use given info to search for member in DB
-
         //get the reference to the member in the DB, if it matches
         Member dbMember = DB.getMember(testMember);
         if(dbMember == null){
             System.out.println(fname + " " + lname + " " + dob.toString() + " is not in the database.");
             return;
         }
-
         Date expire = dbMember.getExpire();
         if (!expire.futureDateCheck()) {
             System.out.println(fname + " " + lname + " " + dob.toString() + " membership expired.");
             return;
         }
-
         FitnessClass choiceClass = null;
         for(FitnessClass aClass : classes){ //finds the chosen class and checks if already a member
             if(aClass.getClassName().equalsIgnoreCase(classStr)){
@@ -223,7 +237,6 @@ o the member has already checked in // just the find method in the fitness class
             System.out.println(classStr + " class does not exist.");
             return;
         }
-
         for (FitnessClass aClass : classes) { //checks for time conflict
             if (aClass != choiceClass) {
                 if (aClass.getMember(dbMember) != null && aClass.getTime().equals(choiceClass.getTime())){
@@ -233,17 +246,22 @@ o the member has already checked in // just the find method in the fitness class
                 }
             }
         }
-
         //having passed all the above checks, adds the member to the chosen class
-
         choiceClass.add(dbMember);
         System.out.println(fname + " " + lname + " checked in " + choiceClass.getClassName() + ".");
     }
 
-    //Your software shall not allow the member to drop the class if:
-    // the member is not checked in,
-    // or the date of birth is invalid,
-    // or the fitness class does not exist.
+    /**
+     * Helper method to execute the "D" command and remove a member from a class schedule.
+     * Reads member information from a StringTokenizer of the command line.
+     * rejects if:
+     *      the member is not checked in (by against checking the database of members signed up for the class)
+     *      the date of birth is invalid (using helper methods from the Date class)
+     *      the fitness class does not exist (checking against the list of available classes)
+     *
+     * Prints result of command execution to terminal.
+     * @param dataTokens StringTokenizer object of the necessary information to process given by the command line.
+     */
     private void dropClass(StringTokenizer dataTokens){
         String classStr = dataTokens.nextToken();
 
