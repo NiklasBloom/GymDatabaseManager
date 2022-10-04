@@ -1,6 +1,7 @@
 package GymDB;
 import java.util.Calendar;
 
+
 public class Date implements Comparable<Date> {
     private int year;
     private int month;
@@ -22,20 +23,20 @@ public class Date implements Comparable<Date> {
         this.month = c.get(Calendar.MONTH);
     }
     public Date(String date) { //take “mm/dd/yyyy” and create a Date object
-        if(date.equals(null)){
+        if (date.equals(null)) {
             this.month = 0;
             this.day = 0;
             this.year = 0;
             return;
         }
-        if(!date.contains("/")){//if it does not contain /, then set to zero
+        if (!date.contains("/")) {//if it does not contain /, then set to zero
             this.month = 0;
             this.day = 0;
             this.year = 0;
             return;
         }
-        String[] tokens=date.split("/");
-        if(tokens.length > 3){
+        String[] tokens = date.split("/");
+        if (tokens.length > 3) {
             this.month = 0;
             this.day = 0;
             this.year = 0;
@@ -44,17 +45,18 @@ public class Date implements Comparable<Date> {
         String month = tokens[0];
         String day = tokens[1];
         String year = tokens[2];
-        if(Double.isNaN(Integer.parseInt(month,10)) ){
-            //|| Double.isNaN(Integer.parseInt(day,10))
-            //        || Double.isNaN(Integer.parseInt(year,10))
-            this.month = 0;
-            this.day = 0;
-            this.year = 0;
-            return;
+        int intYear;
+        int intDay;
+        int intMonth;
+        try {
+            intMonth = Integer.parseInt(month, 10);
+            intDay = Integer.parseInt(day, 10);
+            intYear = Integer.parseInt(year, 10);
+        } catch (NumberFormatException e) {
+            intMonth = 0;
+            intDay = 0;
+            intYear = 0;
         }
-        int intMonth = Integer.parseInt(month,10);
-        int intDay = Integer.parseInt(day,10);
-        int intYear= Integer.parseInt(year,10);
         this.month = intMonth;
         this.day = intDay;
         this.year = intYear;
