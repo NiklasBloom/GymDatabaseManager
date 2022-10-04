@@ -24,7 +24,11 @@ public class FitnessClass extends MemberDatabase{
     private Instructor instructor;
     private String className;
 
-    public enum Time{  //define the time of a fitness class in hh:mm
+    /*
+    define the time of a fitness class in hh:mm
+    Defines the time variable for FitnessClass
+     */
+    public enum Time{
         PILATES(9 ,30),
         SPINNING(14 , 0),
         CARDIO(14 , 0);
@@ -36,37 +40,46 @@ public class FitnessClass extends MemberDatabase{
             this.hour = hour;
             this.minutes = minutes;
         }
+        /*
+        returns the time in String format
+         */
         @Override
         public String toString(){
             return String.format("%d:%02d", this.hour, this.minutes);
         }
 
+        /*
+        Compares and sees if two fitnessClass times are the same
+         */
         public boolean equals(Time otherTime){
             return (this.hour == otherTime.hour && this.minutes == otherTime.minutes);
         }
     }
 
+    /*
+    constants for instructors
+    instructor names
+     */
     public enum Instructor{
         JENNIFER,
         DENISE,
         KIM,
     }
 
-    public FitnessClass() {
-        super();
-    }
-    public void setFitnessClassData(String fitnessClass){
-        this.className = fitnessClass;
-        this.instructor = setInstructor(fitnessClass);
-        this.time = setTime(fitnessClass);
-    }
-
+    /*
+    one argument constructor, given the fitnessClass as a string
+    calls the Superclass which is MemberDatabase
+     */
     public FitnessClass(String fitnessClass) {
         super();
         this.className = fitnessClass;
         this.instructor = setInstructor(fitnessClass);
         this.time = setTime(fitnessClass);
     }
+
+    /*
+    sets the instructor datafield according to the fitnessClass parameter
+     */
     public Instructor setInstructor(String fitnessClass){
         String fitnessClassLowerCase = fitnessClass.toLowerCase();
         switch(fitnessClassLowerCase){
@@ -81,6 +94,10 @@ public class FitnessClass extends MemberDatabase{
         }
     }
 
+
+    /*
+    Sets the time data field according to the FitnessClass
+     */
     public Time setTime(String fitnessClass){
         String fitnessClassLowerCase = fitnessClass.toLowerCase();
         switch(fitnessClassLowerCase){
@@ -95,19 +112,25 @@ public class FitnessClass extends MemberDatabase{
         }
     }
 
+    /*
+    getter method for the ClassName
+     */
     public String getClassName() {
         return this.className;
     }
 
+    /*
+    getter method for the time
+     */
     public Time getTime() {
         return this.time;
     }
 
-    public int getTimeHour() {
-        return this.time.hour;
-    }
+
 
     /*
+    Prints the fitnessClass data in the below format:
+
     Pilates - JENNIFER 9:30
         ** participants **
             Jane Doe, DOB: 5/1/1996, Membership expires 3/30/2023, Location: EDISON, 08837, MIDDLESEX
@@ -120,35 +143,31 @@ public class FitnessClass extends MemberDatabase{
             super.print();
         }
     }
+
+    /*
+    Remove method for FitnessClass
+    Same as Member Database
+     */
     @Override
     public boolean remove(Member member) {
         return super.remove(member);
     }
 
+    /*
+    Add method for FitnessClass
+    Same as MemberDatabase
+     */
     @Override
     public boolean add(Member member) {
         return super.add(member);
     }
 
+    /*
+    returns the member reference from the mlist
+     */
     @Override
     public Member getMember(Member member) {
         return super.getMember(member);
     }
 
-    public int find(Member member) {
-        if(isEmpty()){//if true that list is empty
-            return NOT_FOUND;
-        }
-        int size = this.getSize();
-        Member[] memlist = this.getMlist();
-
-        for (int i = 0; i < size; i++){
-            if(memlist[i] != null) {
-                if (memlist[i].equals(member)) {
-                    return i;
-                }
-            }
-        }
-        return NOT_FOUND;
-    }
 }
