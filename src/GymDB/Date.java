@@ -13,7 +13,7 @@ public class Date implements Comparable<Date> {
     public static final int QUATERCENTENNIAL = 400;
 
 
-    /*
+    /**
     create an object with today’s date using the calendar class
      */
     public Date() {
@@ -22,6 +22,12 @@ public class Date implements Comparable<Date> {
         this.day = c.get(Calendar.DATE);
         this.month = c.get(Calendar.MONTH);
     }
+
+    /**
+     * This constructor takes a String which should be a date, and converts it to a Date
+     * object
+     * @param date which is a date in String format and it is converted to a Date object
+     */
     public Date(String date) { //take “mm/dd/yyyy” and create a Date object
         if (date.equals(null)) {
             this.month = 0;
@@ -63,13 +69,15 @@ public class Date implements Comparable<Date> {
     }
 
 
-    /*
+    /**
     Step 1. If the year is evenly divisible by 4, go to step 2. Otherwise, go to step 5.
     Step 2. If the year is evenly divisible by 100, go to step 3. Otherwise, go to step 4.
     Step 3. If the year is evenly divisible by 400, go to step 4. Otherwise, go to step 5.
     Step 4. The year is a leap year.
     Step 5. The year is not a leap year.
     February has 28 days in a non-leap year, and 29 days in a leap year.
+     @Param takes a date in String form and only the year is extracted
+     @returns true if the year is a leapyear, false otherwise
      */
     public boolean leapYearCheck(String date){
         int year = getDateYear(date); //used a static getter method
@@ -83,6 +91,11 @@ public class Date implements Comparable<Date> {
         return false;
     }
 
+    /**
+     * This method takes a date in string format and only returns the year
+     * @param date, the date we want to retrive the year from
+     * @return the year in integer form
+     */
     public static int getDateYear(String date){
         String[] tokens=date.split("/");
         String year = tokens[2];
@@ -90,12 +103,24 @@ public class Date implements Comparable<Date> {
         return intYear;
     }
 
+
+    /**
+     * getter method for the month if given a date in String format
+     * @param date is a date in String format
+     * @returns an int which is the month of the given date String
+     */
     public static int getDateMonth(String date){
         String[] tokens=date.split("/");
         String year = tokens[0];
         int intMonth= Integer.parseInt(year);
         return intMonth;
     }
+
+    /**
+     * getter method for the Day if given a date in String format
+     * @param date is a date in String format
+     * @returns an int which is the day of the given date String
+     */
     public static int getDateDay(String date){
         String[] tokens=date.split("/");
         String year = tokens[1];
@@ -103,6 +128,12 @@ public class Date implements Comparable<Date> {
         return intDay;
     }
 
+    /**
+     *
+     * @param obj is an object which should be an instance of the Date class
+     * @returns true if the two dates equal eachother, or their days, month, and year values
+     * line up, returns false otherwise
+     */
     @Override
     public boolean equals(Object obj){
         if (obj == null) {
@@ -123,11 +154,13 @@ public class Date implements Comparable<Date> {
         return false;
     }
 
-    /*
+    /**
     compareTo() method is used when sorting by names
     if s1 > s2, it returns 1
     if s1 < s2, it returns -1
     if s1 == s2, it returns 0
+     @param date is the date we want to compare to the date that this method is called on
+     @returns an int which corresponds to a value depending on the compareTo outcome
    */
     @Override
     public int compareTo(Date date) {
@@ -165,10 +198,9 @@ public class Date implements Comparable<Date> {
         return -1;
     }
 
-    /*
-    April March, DOB: 3/31/1990, Membership expires 6/30/2023, Location: PISCATAWAY, 08854, MIDDLESEX
-    Returns the string for a date object
-    Output should look like "6/30/2023" I believe
+    /**
+    Returns the string for a date object and Output should look like "6/30/2023"
+     @returns the date in string format
      */
     @Override
     public String toString() {
@@ -179,25 +211,15 @@ public class Date implements Comparable<Date> {
         return date;
     }
 
-    /*
+    /**
     Must be in  "MM/DD/YYYY" format
-
-    test Cases:
-    DOB 13/8/1977: invalid calendar date!
-    DOB 2/29/2003: invalid calendar date!
-    DOB 4/31/2003: invalid calendar date!
-    DOB 13/31/2003: invalid calendar date!
-    DOB 3/32/2003: invalid calendar date!
-    DOB -1/31/2003: invalid calendar date!
-    Expiration date 4/31/2022: invalid calendar date!
-    Expiration date 2/30/2011: invalid calendar date!
-
     expiry not less than current day
     DOB cannot be greater than current day
-    day must not be greater than month value, CHECK
-    month value must be in 1-12 range, CHECK
-    day value in correct range according to month and leap year, CHECK
-    year must be >= 1900, CHECK
+    day must not be greater than month value,
+    month value must be in 1-12 range,
+    day value in correct range according to month and leap year,
+    year must be >= 1900,
+    @returns true if the date is valid and meets the set conditions, false otherwise
      */
     public boolean isValid() { //called on date obj
         boolean LeapYear = leapYearCheck(this.toString());
@@ -218,6 +240,10 @@ public class Date implements Comparable<Date> {
         return true;
     }
 
+    /**
+     * checks if the date value is over 18 years ago, used for DOB's
+     * @return true is the date is over 18, false otherwise
+     */
     public boolean over18() { //check if member is over 18
         Calendar c = Calendar.getInstance();
         c.add(Calendar.YEAR, -18);
@@ -234,10 +260,11 @@ public class Date implements Comparable<Date> {
         return true;
     }
 
-    /*
+    /**
     checks if the date is greater than the current date, which does not make sense for DOB/join date/other
     also Expire dates must be greater than the current date I assume
     returns true is this.date > current date
+     @returns a boolean if this instances date values are greater than todays calendar date
      */
     public boolean futureDateCheck() {
         Calendar c = Calendar.getInstance();
@@ -258,6 +285,13 @@ public class Date implements Comparable<Date> {
         return false;
     }
 
+    /**
+     *This method takes a month value and a boolean if the year is a leapyear, and returns
+     * the number of days in the month given
+     * @param month is the value of the month and should be a value between 1-12
+     * @param Leapyear is a boolean, true if it is a leapyear, false otherwise
+     * @returns an int which is 1-31 and
+     */
     public int correspondingDaysInMonth(int month, boolean Leapyear){
         switch(month){
             case 1:
@@ -294,20 +328,9 @@ public class Date implements Comparable<Date> {
         }
     }
 
-    /*
-
-A John Doe 9/2/2022 3/30/2023 BRIDGEWATER
-A John Doe 12/2/2022 3/30/2023 BRIDGEWATER
-A John Doe 1/20/2004 3/30/2023 BRIDGEWATER
-A John Doe 12/20/2004 3/30/2023 BRIDGEWATER
-A John Doe 2/29/2003 3/30/2023 BRIDGEWATER
-A John Doe 4/31/2003 3/30/2023 BRIDGEWATER
-A John Doe 13/31/2003 3/30/2023 BRIDGEWATER
-A John Doe 3/32/2003 3/30/2023 BRIDGEWATER
-A John Doe -1/31/2003 3/30/2023 BRIDGEWATER
-A John Doe 4/3/2003 4/31/2022 BRIDGEWATER
-A John Doe 4/3/2003 2/30/2011 BRIDGEWATER
-
+    /**
+     * testBed main method, for test cases to test the IsValid method
+     * @param args, takes the arguments from cmdline, in this case is none.
      */
     public static void main(String[] args) { //testbed main
     Date date1 =new Date("9/2/2022");
