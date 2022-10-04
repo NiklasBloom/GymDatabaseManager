@@ -7,6 +7,10 @@ public class Member implements Comparable<Member>{
     private Date expire;
     private Location location;
 
+
+    /**
+    Location constants for Location data field
+     */
     enum Location{
         Bridgewater,
         Edison,
@@ -14,6 +18,12 @@ public class Member implements Comparable<Member>{
         Piscataway,
         Somerville;
 
+        /**
+        Takes a String locStr and if its characters matches one of the locations, then return
+         that location.
+         @Param takes a string which should be one of the Gym Locations
+         @returns a location variable if the string parameter matches one of the locations
+         */
         public static Location parseLocation(String locStr){
             String locNormalized = locStr.toLowerCase();
             Member.Location location;
@@ -28,8 +38,10 @@ public class Member implements Comparable<Member>{
         }
     }
 
-    /*
+    /**
     constructor for Member Class with each parameter given
+     @Param first name, last name, Date of Birth, Date of Membership expiration,
+     and Gym Location
      */
     public Member(String fname, String lname,
                   Date dob, Date expire, Location location) {
@@ -42,9 +54,10 @@ public class Member implements Comparable<Member>{
 
 
 
-    /*
+    /**
     constructor method if only fname, lname, and DOB is given.
     Used for the checkIn method when only those dat fields are available
+     @Param First name, Last name, and Date of Birth
      */
     public Member(String fname, String lname,
                   Date dob) {
@@ -77,9 +90,11 @@ public class Member implements Comparable<Member>{
     }
 
 
-    /*
+    /**
     to see if two Members are equal to eachother.
     Tests if Members are equal by seeing if the fname, lname and DOB all match
+     @Param takes an obj which should be of the member Class
+     @returns true if this member equals the obj parameter given, returns false otherwise
      */
     @Override
     public boolean equals(Object obj) {
@@ -95,8 +110,9 @@ public class Member implements Comparable<Member>{
         return false;
     }
 
-    /*
+    /**
     to print Member toString, prints fname, lname, DOB, expire, and location
+     @returns a String which is the member in String format
      */
     @Override
     public String toString() {
@@ -107,8 +123,9 @@ public class Member implements Comparable<Member>{
         return s;
     }
 
-    /*
+    /**
     Based off the Members location, this returns the full String location for the toString() method
+     @returns the string of the full location based off this members Location data field value
      */
     public String fullLocation() {
         String s ="";
@@ -131,13 +148,14 @@ public class Member implements Comparable<Member>{
         }
         return s;
     }
-    /*
+    /**
     returns a numeric value for each county/zip code for sorting purposes
      1) Edison, 08837, Middlesex County
     2) Piscataway, 08854, Middlesex County
     3) Bridgewater, 08807, Somerset County
     4) Franklin, 08873, Somerset County
     5) Somerville, 08876, Somerset County
+     @returns an integer based off of this members location value
      */
     public int locationNumeric() {
         int locationNumber = -1;
@@ -163,11 +181,13 @@ public class Member implements Comparable<Member>{
 
 
 
-    /*
+    /**
      compareTo() method is used when sorting by names
      if s1 > s2, it returns 1
      if s1 < s2, it returns -1
      if s1 == s2, it returns 0
+     @Param the integer we want to compare to the Member this method is called on
+     @returns an integer based off the CompareTo description
     */
     @Override
     public int compareTo(Member member) {
@@ -197,9 +217,8 @@ public class Member implements Comparable<Member>{
 
 
 
-    /*
+    /**
     testbed method for CompareTo Test Cases
-
     EO = Expected Output
      */
     public static void main(String[] args) {

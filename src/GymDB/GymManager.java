@@ -60,8 +60,7 @@ public class GymManager {
             case "P":
                 if(DB.isEmpty()){
                     System.out.println("Member database is empty!");
-                    return false;
-                }
+                    return false; }
                 System.out.println("\n-list of members-");
                 DB.print();
                 System.out.println("-end of list-\n");
@@ -69,8 +68,7 @@ public class GymManager {
             case "PC":
                 if(DB.isEmpty()){
                     System.out.println("Member database is empty!");
-                    return false;
-                }
+                    return false; }
                 System.out.println("\n-list of members sorted by county and zipcode-");
                 DB.printByCounty();
                 System.out.println("-end of list-\n");
@@ -78,8 +76,7 @@ public class GymManager {
             case "PN":
                 if(DB.isEmpty()){
                     System.out.println("Member database is empty!");
-                    return false;
-                }
+                    return false; }
                 System.out.println("\n-list of members sorted by last name, and first name-");
                 DB.printByName();
                 System.out.println("-end of list-\n");
@@ -87,8 +84,7 @@ public class GymManager {
             case "PD":
                 if(DB.isEmpty()){
                     System.out.println("Member database is empty!");
-                    return false;
-                }
+                    return false; }
                 System.out.println("\n-list of members sorted by membership expiration date-");
                 DB.printByExpirationDate();
                 System.out.println("-end of list-\n");
