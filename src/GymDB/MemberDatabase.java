@@ -6,23 +6,33 @@ public class MemberDatabase {
 
     public static final int NOT_FOUND = -1;
 
+    /*
+    no argument constructor
+     */
     public MemberDatabase() {
         this.size=4;
         this.mlist=new Member[4];
 
     }
 
+    /*
+    getter method to return the mlist
+     */
     public Member[] getMlist(){
         return this.mlist;
     }
 
+    /*
+    getter method that returns size
+     */
     public int getSize(){
         return this.size;
     }
 
 
     /* The find() method searches a member in the list and returns the index if it is found, it returns -1 if the
-    member is not in the list. You must define a constant identifier “NOT_FOUND” for the value -1. */
+    member is not in the list. You must define a constant identifier “NOT_FOUND” for the value -1.
+    */
     private int find(Member member) {
         if(isEmpty()){//if true that list is empty
             return NOT_FOUND;
@@ -78,7 +88,6 @@ public class MemberDatabase {
     adds a member to the array
     Returns false if the member already exists in the array
     Checks if capacity of array is full and then inc size by 4 if full
-
      */
     public boolean add(Member member){
         if(this.find(member) >= 0){
@@ -116,8 +125,8 @@ public class MemberDatabase {
     }
 
     /*
-    // iterates through array, if an element != null, that is there is a member existing in
-            //the list, then return false, if no member in whole array, return true
+      iterates through array, if an element != null, that is there is a member existing in
+       the list, then return false, if no member in whole array, return true
      */
     public boolean isEmpty() {
         //dont check for size, because could be any size but we just removed all the members
@@ -157,9 +166,7 @@ public class MemberDatabase {
         return true;
     }
 
-    /*
-    returns
-     */
+
 
 
     /*
