@@ -175,5 +175,10 @@ public class Member implements Comparable<Member>{
         }
         return locationNumber;
     }
+
+    public static void main(String[] args) { //testbed main
+
+    }
+
 }
 

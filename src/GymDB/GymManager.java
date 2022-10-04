@@ -224,6 +224,7 @@ o the member has already checked in // just the find method in the fitness class
         }
 
         //having passed all the above checks, adds the member to the chosen class
+
         choiceClass.add(dbMember);
         System.out.println(fname + " " + lname + " checked in " + choiceClass.getClassName() + ".");
     }

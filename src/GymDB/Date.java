@@ -22,13 +22,39 @@ public class Date implements Comparable<Date> {
         this.month = c.get(Calendar.MONTH);
     }
     public Date(String date) { //take “mm/dd/yyyy” and create a Date object
+        if(date.equals(null)){
+            this.month = 0;
+            this.day = 0;
+            this.year = 0;
+            return;
+        }
+        if(!date.contains("/")){//if it does not contain /, then set to zero
+            this.month = 0;
+            this.day = 0;
+            this.year = 0;
+            return;
+        }
         String[] tokens=date.split("/");
+        if(tokens.length > 3){
+            this.month = 0;
+            this.day = 0;
+            this.year = 0;
+            return;
+        }
         String month = tokens[0];
         String day = tokens[1];
         String year = tokens[2];
-        int intMonth = Integer.parseInt(month);
-        int intDay = Integer.parseInt(day);
-        int intYear= Integer.parseInt(year);
+        if(Double.isNaN(Integer.parseInt(month,10)) ){
+            //|| Double.isNaN(Integer.parseInt(day,10))
+            //        || Double.isNaN(Integer.parseInt(year,10))
+            this.month = 0;
+            this.day = 0;
+            this.year = 0;
+            return;
+        }
+        int intMonth = Integer.parseInt(month,10);
+        int intDay = Integer.parseInt(day,10);
+        int intYear= Integer.parseInt(year,10);
         this.month = intMonth;
         this.day = intDay;
         this.year = intYear;
@@ -266,4 +292,85 @@ public class Date implements Comparable<Date> {
         }
     }
 
+    /*
+
+A John Doe 9/2/2022 3/30/2023 BRIDGEWATER
+A John Doe 12/2/2022 3/30/2023 BRIDGEWATER
+A John Doe 1/20/2004 3/30/2023 BRIDGEWATER
+A John Doe 12/20/2004 3/30/2023 BRIDGEWATER
+A John Doe 2/29/2003 3/30/2023 BRIDGEWATER
+A John Doe 4/31/2003 3/30/2023 BRIDGEWATER
+A John Doe 13/31/2003 3/30/2023 BRIDGEWATER
+A John Doe 3/32/2003 3/30/2023 BRIDGEWATER
+A John Doe -1/31/2003 3/30/2023 BRIDGEWATER
+A John Doe 4/3/2003 4/31/2022 BRIDGEWATER
+A John Doe 4/3/2003 2/30/2011 BRIDGEWATER
+
+     */
+    public static void main(String[] args) { //testbed main
+    Date date1 =new Date("9/2/2022");
+    Boolean passCheck1 = date1.isValid();
+    System.out.println("passCheck1: " + date1 + " " + passCheck1);
+
+    Date date2 =new Date("12/2/2022");
+    Boolean passCheck2 = date2.isValid();
+    System.out.println("passCheck2: " + date2 + " " + passCheck2);
+
+    Date date3 =new Date("1/20/2004");
+    Boolean passCheck3 = date3.isValid();
+    System.out.println("passCheck3: " + date3 + " " + passCheck3);
+
+    Date date4 =new Date("12/20/2004");
+    Boolean passCheck4 = date4.isValid();
+    System.out.println("passCheck4: " + date4 + " " + passCheck4);
+
+    Date date5 =new Date("2/29/2003");
+    Boolean passCheck5 = date5.isValid();
+    System.out.println("passCheck5: " + date5 + " "  + passCheck5);
+
+    Date date6 =new Date("4/31/2003");
+    Boolean passCheck6 = date6.isValid();
+    System.out.println("passCheck6: " + date6 + " "  + passCheck6);
+
+    Date date7 =new Date("13/31/2003");
+    Boolean passCheck7 = date7.isValid();
+    System.out.println("passCheck7: " + date7 + " "  + passCheck7);
+
+    Date date8 =new Date("3/32/2003");
+    Boolean passCheck8 = date8.isValid();
+    System.out.println("passCheck8: " + date8 + " "  + passCheck8);
+
+    Date date9 =new Date("-1/31/2003");
+    Boolean passCheck9 = date9.isValid();
+    System.out.println("passCheck9: " + date9 + " " + passCheck9);
+
+    Date date10 =new Date("4/3/2003");
+    Boolean passCheck10 = date10.isValid();
+    System.out.println("passCheck10: " + date10 + " " + passCheck10);
+
+    Date date11 =new Date("0/0/0");
+    Boolean passCheck11 = date11.isValid();
+    System.out.println("passCheck10: " + date11 + " " + passCheck11);
+
+    Date date12 =new Date("random test text");
+    Boolean passCheck12 = date12.isValid();
+    System.out.println("passCheck10: " + date12 + " " + passCheck12);
+
+    Date date13 =new Date("");
+    Boolean passCheck13 = date13.isValid();
+    System.out.println("passCheck10: " + date13 + " " + passCheck13);
+
+    Date date14 =new Date("20/20/20/20");
+    Boolean passCheck14 = date14.isValid();
+    System.out.println("passCheck10: " + date14 + " " + passCheck14);
+
+    Date date15 =new Date("1.0/3.0/2003.0");
+    Boolean passCheck15 = date15.isValid();
+    System.out.println("passCheck10: " + date15 + " " + passCheck15);
+
+
+
+
+
+    }
 }
