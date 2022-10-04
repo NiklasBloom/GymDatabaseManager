@@ -3,9 +3,11 @@
  * Reads input using a Scanner object, tokenizing each line by groups of non-whitespace characters.
  * Uses a continuous while loop to read from standard input until a termination command is given.
  * Reports status and results by printing to standard output.
+ *
  * @author Maxim Yacun, Niklas Bloom
-*/
+ */
 package GymDB;
+
 import java.util.Scanner;
 import java.util.StringTokenizer;
 
@@ -31,7 +33,7 @@ public class GymManager {
             StringTokenizer lineTokens = new StringTokenizer(currentLine);
 
             if (lineTokens.hasMoreTokens()) {
-                if(commandParser(lineTokens))
+                if (commandParser(lineTokens))
                     break;
             } else { //skip blank line and print a blank line
                 System.out.println();
@@ -45,67 +47,67 @@ public class GymManager {
      * Parses standard input into appropriate commands and passes information to helper methods to handle command work.
      * @param lineTokens StringTokenizer object of the command line to parse.
      * @return true if we get a Q command to signify termination of the program, false otherwise; signifying run() should continue.
-    */
-    private boolean commandParser(StringTokenizer lineTokens){
+     */
+    private boolean commandParser(StringTokenizer lineTokens) {
         String command = lineTokens.nextToken();
         switch (command) {
-            case "Q":
-                return true;
-            case "A": //add member
-                addMember(lineTokens);
-                return false;
-            case "R": //cancel membership
-                rmMember(lineTokens);
-                return false;
-            case "P":
-                if(DB.isEmpty()){
+            case "Q" -> { return true; }
+            case "A" -> addMember(lineTokens);
+            case "R" -> rmMember(lineTokens);
+            case "P", "PC", "PN", "PD" -> {
+                if (DB.isEmpty()) {
                     System.out.println("Member database is empty!");
-                    return false; }
-                System.out.println("\n-list of members-");
-                DB.print();
+                    return false;
+                }
+                switch (command) {
+                    case "P" -> {
+                        System.out.println("\n-list of members-");
+                        DB.print();
+                    } case "PC" -> {
+                        System.out.println("\n-list of members sorted by county and zipcode-");
+                        DB.printByCounty();
+                    } case "PN" -> {
+                        System.out.println("\n-list of members sorted by last name, and first name-");
+                        DB.printByName();
+                    } case "PD" -> {
+                        System.out.println("\n-list of members sorted by membership expiration date-");
+                        DB.printByExpirationDate();
+                    }
+                }
                 System.out.println("-end of list-\n");
-                return false;
-            case "PC":
-                if(DB.isEmpty()){
-                    System.out.println("Member database is empty!");
-                    return false; }
-                System.out.println("\n-list of members sorted by county and zipcode-");
-                DB.printByCounty();
-                System.out.println("-end of list-\n");
-                return false;
-            case "PN":
-                if(DB.isEmpty()){
-                    System.out.println("Member database is empty!");
-                    return false; }
-                System.out.println("\n-list of members sorted by last name, and first name-");
-                DB.printByName();
-                System.out.println("-end of list-\n");
-                return false;
-            case "PD":
-                if(DB.isEmpty()){
-                    System.out.println("Member database is empty!");
-                    return false; }
-                System.out.println("\n-list of members sorted by membership expiration date-");
-                DB.printByExpirationDate();
-                System.out.println("-end of list-\n");
-                return false;
-            case "S":
+            }
+            case "S" -> {
                 System.out.println("\n-Fitness classes-");
                 for (FitnessClass aClass : classes) aClass.print();
                 System.out.println();
-                return false;
-            case "C":
-                checkInMember(lineTokens);
-                return false;
-            case "D":
-                dropClass(lineTokens);
-                return false;
-            default:
-                System.out.println(command + " is an invalid command!");
-                return false;
+            }
+            case "C" -> checkInMember(lineTokens);
+            case "D" -> dropClass(lineTokens);
+            default -> System.out.println(command + " is an invalid command!");
         }
+        return false;
     }
 
+    /**
+     * Helper method to perform isValid(), over18(), and futureDateCheck() checks on a Date
+     * @param dob a Date object to check against all validity conditions
+     * @return true if DOB passes all checks, false otherwise
+     */
+    private boolean dobCheck(Date dob){
+        if (!dob.isValid()) { //returns false if general errors in date.
+            System.out.println("DOB " + dob.toString() + ": invalid calendar date!");
+            return false;
+        }
+        if (!dob.over18()) { //returns true if 18 or older
+            System.out.println("DOB " + dob.toString() + ": must be 18 or older to join!");
+            return false;
+        }
+        if (dob.futureDateCheck()) { //return true if this.date > current date
+            System.out.println("DOB " + dob.toString() + ": cannot be today or a future date!");
+            return false;
+        }
+        return true;
+    }
 
     /**
      * Helper method to execute the "A" command and add a member to the MemberDatabase DB.
@@ -124,18 +126,8 @@ public class GymManager {
         String fname = dataTokens.nextToken();
         String lname = dataTokens.nextToken();
         Date dob = new Date(dataTokens.nextToken());
-        if (!dob.isValid()) { //returns false if general errors in date.
-            System.out.println("DOB " + dob.toString() + ": invalid calendar date!");
+        if(!dobCheck(dob))
             return;
-        }
-        if (!dob.over18()) { //returns true if 18 or older
-            System.out.println("DOB " + dob.toString() + ": must be 18 or older to join!");
-            return;
-        }
-        if (dob.futureDateCheck()) { //return true if this.date > current date
-            System.out.println("DOB " + dob.toString() + ": cannot be today or a future date!");
-            return;
-        }
 
         Date expire = new Date(dataTokens.nextToken());
         if (!expire.isValid()) { //returns false if general errors in date.
@@ -144,7 +136,7 @@ public class GymManager {
         }
         String locParam = dataTokens.nextToken();
         Member.Location location = Member.Location.parseLocation(locParam);
-        if(location == null) {
+        if (location == null) {
             System.out.println(locParam + ": invalid location!");
             return;
         }
@@ -162,12 +154,12 @@ public class GymManager {
      * Prints result of command execution to terminal.
      * @param dataTokens StringTokenizer object of the necessary information to process given by the command line.
      */
-    private void rmMember(StringTokenizer dataTokens){
+    private void rmMember(StringTokenizer dataTokens) {
         String fname = dataTokens.nextToken();
         String lname = dataTokens.nextToken();
         Date dob = new Date(dataTokens.nextToken());
         Member rmMem = new Member(fname, lname, dob, null, null);
-        if(!DB.remove(rmMem)) {
+        if (!DB.remove(rmMem)) {
             System.out.println(fname + " " + lname + " is not in the database.");
         } else {
             System.out.println(fname + " " + lname + " removed.");
@@ -193,22 +185,12 @@ public class GymManager {
         String fname = dataTokens.nextToken();
         String lname = dataTokens.nextToken();
         Date dob = new Date(dataTokens.nextToken()); //check if dob is valid
-        if (!dob.isValid()) { //returns false if general errors in date.
-            System.out.println("DOB " + dob.toString() + ": invalid calendar date!");
+        if(!dobCheck(dob))
             return;
-        }
-        if (!dob.over18()) { //returns true if 18 or older
-            System.out.println("DOB " + dob.toString() + ": must be 18 or older to join!");
-            return;
-        }
-        if (dob.futureDateCheck()) { //return true if this.date > current date
-            System.out.println("DOB " + dob.toString() + ": cannot be today or a future date!");
-            return;
-        }
+
         Member testMember = new Member(fname, lname, dob); //use given info to search for member in DB
-        //get the reference to the member in the DB, if it matches
-        Member dbMember = DB.getMember(testMember);
-        if(dbMember == null){
+        Member dbMember = DB.getMember(testMember); //get the reference to the member in the DB, if it matches
+        if (dbMember == null) {
             System.out.println(fname + " " + lname + " " + dob.toString() + " is not in the database.");
             return;
         }
@@ -217,9 +199,10 @@ public class GymManager {
             System.out.println(fname + " " + lname + " " + dob.toString() + " membership expired.");
             return;
         }
+
         FitnessClass choiceClass = null;
-        for(FitnessClass aClass : classes){ //finds the chosen class and checks if already a member
-            if(aClass.getClassName().equalsIgnoreCase(classStr)){
+        for (FitnessClass aClass : classes) { //finds the chosen class and checks if already a member
+            if (aClass.getClassName().equalsIgnoreCase(classStr)) {
                 if (aClass.getMember(dbMember) != null) {
                     System.out.println(fname + " " + lname + " has already checked in " + aClass.getClassName() + ".");
                     return;
@@ -229,21 +212,20 @@ public class GymManager {
                 }
             }
         }
-        if(choiceClass == null){ //checks if class exists
+        if (choiceClass == null) { //checks if class exists
             System.out.println(classStr + " class does not exist.");
             return;
         }
         for (FitnessClass aClass : classes) { //checks for time conflict
             if (aClass != choiceClass) {
-                if (aClass.getMember(dbMember) != null && aClass.getTime().equals(choiceClass.getTime())){
+                if (aClass.getMember(dbMember) != null && aClass.getTime().equals(choiceClass.getTime())) {
                     System.out.println(choiceClass.getClassName() + " time conflict -- " +
                             fname + " " + lname + " has already checked in " + aClass.getClassName() + ".");
                     return;
                 }
             }
         }
-        //having passed all the above checks, adds the member to the chosen class
-        choiceClass.add(dbMember);
+        choiceClass.add(dbMember); //having passed all the above checks, adds the member to the chosen class
         System.out.println(fname + " " + lname + " checked in " + choiceClass.getClassName() + ".");
     }
 
@@ -258,31 +240,21 @@ public class GymManager {
      * Prints result of command execution to terminal.
      * @param dataTokens StringTokenizer object of the necessary information to process given by the command line.
      */
-    private void dropClass(StringTokenizer dataTokens){
+    private void dropClass(StringTokenizer dataTokens) {
         String classStr = dataTokens.nextToken();
 
         String fname = dataTokens.nextToken();
         String lname = dataTokens.nextToken();
 
         Date dob = new Date(dataTokens.nextToken()); //check if dob is valid
-        if (!dob.isValid()) { //returns false if general errors in date.
-            System.out.println("DOB " + dob.toString() + ": invalid calendar date!");
+        if(!dobCheck(dob))
             return;
-        }
-        if (!dob.over18()) { //returns true if 18 or older
-            System.out.println("DOB " + dob.toString() + ": must be 18 or older to join!");
-            return;
-        }
-        if (dob.futureDateCheck()) { //return true if this.date > current date
-            System.out.println("DOB " + dob.toString() + ": cannot be today or a future date!");
-            return;
-        }
 
         Member classMember = new Member(fname, lname, dob); //use given info to search for member in class
 
-        for(FitnessClass aClass : classes){ //finds the chosen class and checks if already a member
-            if(aClass.getClassName().equalsIgnoreCase(classStr)){
-                if(!aClass.remove(classMember)) {
+        for (FitnessClass aClass : classes) { //finds the chosen class and checks if already a member
+            if (aClass.getClassName().equalsIgnoreCase(classStr)) {
+                if (!aClass.remove(classMember)) {
                     System.out.println(fname + " " + lname + " is not a participant in " + classStr + ".");
                 } else {
                     System.out.println(fname + " " + lname + " dropped " + classStr + ".");
