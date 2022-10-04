@@ -24,7 +24,7 @@ public class FitnessClass extends MemberDatabase{
     private Instructor instructor;
     private String className;
 
-    /*
+    /**
     define the time of a fitness class in hh:mm
     Defines the time variable for FitnessClass
      */
@@ -40,25 +40,27 @@ public class FitnessClass extends MemberDatabase{
             this.hour = hour;
             this.minutes = minutes;
         }
-        /*
+        /**
         returns the time in String format
+         @returns the time of the instance in String format
          */
         @Override
         public String toString(){
             return String.format("%d:%02d", this.hour, this.minutes);
         }
 
-        /*
+        /**
         Compares and sees if two fitnessClass times are the same
+         @Param a time to see if equal to this time
+         @returns a boolean, true if equal, false otherwise
          */
         public boolean equals(Time otherTime){
             return (this.hour == otherTime.hour && this.minutes == otherTime.minutes);
         }
     }
 
-    /*
-    constants for instructors
-    instructor names
+    /**
+    constants for instructors, instructor names
      */
     public enum Instructor{
         JENNIFER,
@@ -66,9 +68,10 @@ public class FitnessClass extends MemberDatabase{
         KIM,
     }
 
-    /*
-    one argument constructor, given the fitnessClass as a string
-    calls the Superclass which is MemberDatabase
+    /**
+    one argument constructor, given the fitnessClass as a strin calls the Superclass
+     which is MemberDatabase
+     @Param A String which should be one of the fitness Classes, Pilates, Cardio, or Spinning
      */
     public FitnessClass(String fitnessClass) {
         super();
@@ -77,8 +80,10 @@ public class FitnessClass extends MemberDatabase{
         this.time = setTime(fitnessClass);
     }
 
-    /*
+    /**
     sets the instructor datafield according to the fitnessClass parameter
+     @Param A String which should be one of the fitness Classes, Pilates, Cardio, or Spinning
+     @returns the instructor of the given fitnessClass
      */
     public Instructor setInstructor(String fitnessClass){
         String fitnessClassLowerCase = fitnessClass.toLowerCase();
@@ -95,8 +100,11 @@ public class FitnessClass extends MemberDatabase{
     }
 
 
-    /*
-    Sets the time data field according to the FitnessClass
+    /**
+    Sets the time data field according to the FitnessClass String given, If it matches with
+     one of the FitnessClasses
+     @Param A String which should be one of the fitness Classes, Pilates, Cardio, or Spinning
+     @return the time of the class
      */
     public Time setTime(String fitnessClass){
         String fitnessClassLowerCase = fitnessClass.toLowerCase();
@@ -112,23 +120,19 @@ public class FitnessClass extends MemberDatabase{
         }
     }
 
-    /*
-    getter method for the ClassName
-     */
+
     public String getClassName() {
         return this.className;
     }
 
-    /*
-    getter method for the time
-     */
+
     public Time getTime() {
         return this.time;
     }
 
 
 
-    /*
+    /**
     Prints the fitnessClass data in the below format:
 
     Pilates - JENNIFER 9:30
@@ -144,26 +148,30 @@ public class FitnessClass extends MemberDatabase{
         }
     }
 
-    /*
-    Remove method for FitnessClass
-    Same as Member Database
+    /**
+     Remove method for FitnessClass, Same as Member Database
+     @Param the member reference we want to search for and remove from this instance's mlist
+     @return true if the member is removed, false otherwise
      */
     @Override
     public boolean remove(Member member) {
         return super.remove(member);
     }
 
-    /*
-    Add method for FitnessClass
-    Same as MemberDatabase
+    /**
+     Add method for FitnessClass, Same as MemberDatabase
+     @Param the member we want to add to the mlist
+     @return true if the member is added, false otherwise
      */
     @Override
     public boolean add(Member member) {
         return super.add(member);
     }
 
-    /*
+    /**
     returns the member reference from the mlist
+     @Param the member we want the full member reference
+     @return the member reference that is in the mlist for the instance
      */
     @Override
     public Member getMember(Member member) {
