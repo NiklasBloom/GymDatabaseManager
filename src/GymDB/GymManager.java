@@ -1,7 +1,18 @@
+/**
+ * GymManager keeps a MemberDatabase and an array of FitnessClass objects, processing commands to alter those from standard input.
+ * Reads input using a Scanner object, tokenizing each line by groups of non-whitespace characters.
+ * Uses a continuous while loop to read from standard input until a termination command is given.
+ * Reports status and results by printing to standard output.
+ * @author Maxim Yacun, Niklas Bloom
+*/
 package GymDB;
 import java.util.Scanner;
 import java.util.StringTokenizer;
 
+/**
+ * Defines a GymManager object with the main run() method, helpers to execute commands, and databases to store information.
+ *
+ */
 public class GymManager {
     private MemberDatabase DB;
     private FitnessClass[] classes;
@@ -20,7 +31,7 @@ public class GymManager {
             if (lineTokens.hasMoreTokens()) {
                 if(commandParser(lineTokens))
                     break;
-            } else { //skips blank lines and prints a blank line
+            } else { //skip blank line and print a blank line
                 System.out.println();
             }
             currentLine = sc.nextLine();
