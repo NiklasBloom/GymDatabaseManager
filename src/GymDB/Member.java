@@ -28,7 +28,9 @@ public class Member implements Comparable<Member>{
         }
     }
 
-
+    /*
+    constructor for Member Class with each parameter given
+     */
     public Member(String fname, String lname,
                   Date dob, Date expire, Location location) {
         this.location = location;
@@ -38,6 +40,12 @@ public class Member implements Comparable<Member>{
         this.expire = expire;
     }
 
+
+
+    /*
+    constructor method if only fname, lname, and DOB is given.
+    Used for the checkIn method when only those dat fields are available
+     */
     public Member(String fname, String lname,
                   Date dob) {
 
@@ -101,6 +109,10 @@ public class Member implements Comparable<Member>{
         return 0;
     }
 
+    /*
+    to see if two Members are equal to eachother.
+    Tests if Members are equal by seeing if the fname, lname and DOB all match
+     */
     @Override
     public boolean equals(Object obj) {
         if (obj == null) {
@@ -115,6 +127,9 @@ public class Member implements Comparable<Member>{
         return false;
     }
 
+    /*
+    to print Member toString, prints fname, lname, DOB, expire, and location
+     */
     @Override
     public String toString() {
         //checks if membership is expired, and change wording from "expires" to "expired" accordingly
@@ -123,8 +138,10 @@ public class Member implements Comparable<Member>{
                 + this.expire.toString() + ", Location: " + this.fullLocation();
         return s;
     }
-    //April March, DOB: 3/31/1990, Membership expires 6/30/2023, Location: PISCATAWAY, 08854, MIDDLESEX
 
+    /*
+    Based off the Members location, this returns the full String location for the toString() method
+     */
     public String fullLocation() {
         String s ="";
         switch (location) {
@@ -176,9 +193,30 @@ public class Member implements Comparable<Member>{
         return locationNumber;
     }
 
-    public static void main(String[] args) { //testbed main
 
+    /*
+    testbed method for CompareTo Test Cases
+     */
+    public static void main(String[] args) { //testbed main for compareto Method
+        Member member1 = new Member("Niklas", "Bloom", new Date("1/2/2000"), new Date("1/2/2022"), Location.Piscataway);
+        Member member2 = new Member("Niklas", "Cloom", new Date("1/2/2000"));
+        System.out.println(member1.compareTo(member2));
+
+        Member member3 = new Member("Niklas", "A", new Date("1/2/2000"));
+        Member member4 = new Member("Niklas", "Z", new Date("1/2/2000"));
+        System.out.println(member3.compareTo(member4));
+
+        Member member5 = new Member("Niklas", "Z", new Date("1/2/2000"));
+        Member member6 = new Member("Niklas", "A", new Date("1/2/2000"));
+        System.out.println(member5.compareTo(member6));
+
+        Member member7 = new Member("A", "A", new Date("1/2/2000"));
+        Member member8 = new Member("A", "Z", new Date("1/2/2000"));
+        System.out.println(member7.compareTo(member8));
+
+        Member member9 = new Member("A", "A", new Date("1/2/2000"));
+        Member member10 = new Member("B", "Z", new Date("1/2/2000"));
+        System.out.println(member9.compareTo(member10));
     }
-
 }
 
