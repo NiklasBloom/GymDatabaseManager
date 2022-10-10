@@ -333,7 +333,7 @@ public class Date implements Comparable<Date> {
      * @param args, takes the arguments from cmdline, in this case is none.
      */
     public static void main(String[] args) { //testbed main
-    Date date1 =new Date("9/2/2022");
+    Date date1 =new Date("9/2/1899");
     Boolean passCheck1 = date1.isValid();
     System.out.println("passCheck1: " + date1 + " " + passCheck1);
 
@@ -341,7 +341,7 @@ public class Date implements Comparable<Date> {
     Boolean passCheck2 = date2.isValid();
     System.out.println("passCheck2: " + date2 + " " + passCheck2);
 
-    Date date3 =new Date("1/20/2004");
+    Date date3 =new Date("2/29/2004");
     Boolean passCheck3 = date3.isValid();
     System.out.println("passCheck3: " + date3 + " " + passCheck3);
 
